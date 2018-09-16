@@ -167,6 +167,283 @@ caloGAN/fast:
 	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/build
 .PHONY : caloGAN/fast
 
+#=============================================================================
+# Target rules for targets named caloGAN2
+
+# Build rule for target.
+caloGAN2: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 caloGAN2
+.PHONY : caloGAN2
+
+# fast build rule for target.
+caloGAN2/fast:
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/build
+.PHONY : caloGAN2/fast
+
+generate.o: generate.cc.o
+
+.PHONY : generate.o
+
+# target to build an object file
+generate.cc.o:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/generate.cc.o
+.PHONY : generate.cc.o
+
+generate.i: generate.cc.i
+
+.PHONY : generate.i
+
+# target to preprocess a source file
+generate.cc.i:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/generate.cc.i
+.PHONY : generate.cc.i
+
+generate.s: generate.cc.s
+
+.PHONY : generate.s
+
+# target to generate assembly for a file
+generate.cc.s:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/generate.cc.s
+.PHONY : generate.cc.s
+
+generate2.o: generate2.cc.o
+
+.PHONY : generate2.o
+
+# target to build an object file
+generate2.cc.o:
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/generate2.cc.o
+.PHONY : generate2.cc.o
+
+generate2.i: generate2.cc.i
+
+.PHONY : generate2.i
+
+# target to preprocess a source file
+generate2.cc.i:
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/generate2.cc.i
+.PHONY : generate2.cc.i
+
+generate2.s: generate2.cc.s
+
+.PHONY : generate2.s
+
+# target to generate assembly for a file
+generate2.cc.s:
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/generate2.cc.s
+.PHONY : generate2.cc.s
+
+src/ActionInitialization.o: src/ActionInitialization.cc.o
+
+.PHONY : src/ActionInitialization.o
+
+# target to build an object file
+src/ActionInitialization.cc.o:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/src/ActionInitialization.cc.o
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/src/ActionInitialization.cc.o
+.PHONY : src/ActionInitialization.cc.o
+
+src/ActionInitialization.i: src/ActionInitialization.cc.i
+
+.PHONY : src/ActionInitialization.i
+
+# target to preprocess a source file
+src/ActionInitialization.cc.i:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/src/ActionInitialization.cc.i
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/src/ActionInitialization.cc.i
+.PHONY : src/ActionInitialization.cc.i
+
+src/ActionInitialization.s: src/ActionInitialization.cc.s
+
+.PHONY : src/ActionInitialization.s
+
+# target to generate assembly for a file
+src/ActionInitialization.cc.s:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/src/ActionInitialization.cc.s
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/src/ActionInitialization.cc.s
+.PHONY : src/ActionInitialization.cc.s
+
+src/DetectorConstruction.o: src/DetectorConstruction.cc.o
+
+.PHONY : src/DetectorConstruction.o
+
+# target to build an object file
+src/DetectorConstruction.cc.o:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/src/DetectorConstruction.cc.o
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/src/DetectorConstruction.cc.o
+.PHONY : src/DetectorConstruction.cc.o
+
+src/DetectorConstruction.i: src/DetectorConstruction.cc.i
+
+.PHONY : src/DetectorConstruction.i
+
+# target to preprocess a source file
+src/DetectorConstruction.cc.i:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/src/DetectorConstruction.cc.i
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/src/DetectorConstruction.cc.i
+.PHONY : src/DetectorConstruction.cc.i
+
+src/DetectorConstruction.s: src/DetectorConstruction.cc.s
+
+.PHONY : src/DetectorConstruction.s
+
+# target to generate assembly for a file
+src/DetectorConstruction.cc.s:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/src/DetectorConstruction.cc.s
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/src/DetectorConstruction.cc.s
+.PHONY : src/DetectorConstruction.cc.s
+
+src/EventAction.o: src/EventAction.cc.o
+
+.PHONY : src/EventAction.o
+
+# target to build an object file
+src/EventAction.cc.o:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/src/EventAction.cc.o
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/src/EventAction.cc.o
+.PHONY : src/EventAction.cc.o
+
+src/EventAction.i: src/EventAction.cc.i
+
+.PHONY : src/EventAction.i
+
+# target to preprocess a source file
+src/EventAction.cc.i:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/src/EventAction.cc.i
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/src/EventAction.cc.i
+.PHONY : src/EventAction.cc.i
+
+src/EventAction.s: src/EventAction.cc.s
+
+.PHONY : src/EventAction.s
+
+# target to generate assembly for a file
+src/EventAction.cc.s:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/src/EventAction.cc.s
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/src/EventAction.cc.s
+.PHONY : src/EventAction.cc.s
+
+src/PrimaryGeneratorAction.o: src/PrimaryGeneratorAction.cc.o
+
+.PHONY : src/PrimaryGeneratorAction.o
+
+# target to build an object file
+src/PrimaryGeneratorAction.cc.o:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/src/PrimaryGeneratorAction.cc.o
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/src/PrimaryGeneratorAction.cc.o
+.PHONY : src/PrimaryGeneratorAction.cc.o
+
+src/PrimaryGeneratorAction.i: src/PrimaryGeneratorAction.cc.i
+
+.PHONY : src/PrimaryGeneratorAction.i
+
+# target to preprocess a source file
+src/PrimaryGeneratorAction.cc.i:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/src/PrimaryGeneratorAction.cc.i
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/src/PrimaryGeneratorAction.cc.i
+.PHONY : src/PrimaryGeneratorAction.cc.i
+
+src/PrimaryGeneratorAction.s: src/PrimaryGeneratorAction.cc.s
+
+.PHONY : src/PrimaryGeneratorAction.s
+
+# target to generate assembly for a file
+src/PrimaryGeneratorAction.cc.s:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/src/PrimaryGeneratorAction.cc.s
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/src/PrimaryGeneratorAction.cc.s
+.PHONY : src/PrimaryGeneratorAction.cc.s
+
+src/RunAction.o: src/RunAction.cc.o
+
+.PHONY : src/RunAction.o
+
+# target to build an object file
+src/RunAction.cc.o:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/src/RunAction.cc.o
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/src/RunAction.cc.o
+.PHONY : src/RunAction.cc.o
+
+src/RunAction.i: src/RunAction.cc.i
+
+.PHONY : src/RunAction.i
+
+# target to preprocess a source file
+src/RunAction.cc.i:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/src/RunAction.cc.i
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/src/RunAction.cc.i
+.PHONY : src/RunAction.cc.i
+
+src/RunAction.s: src/RunAction.cc.s
+
+.PHONY : src/RunAction.s
+
+# target to generate assembly for a file
+src/RunAction.cc.s:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/src/RunAction.cc.s
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/src/RunAction.cc.s
+.PHONY : src/RunAction.cc.s
+
+src/RunData.o: src/RunData.cc.o
+
+.PHONY : src/RunData.o
+
+# target to build an object file
+src/RunData.cc.o:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/src/RunData.cc.o
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/src/RunData.cc.o
+.PHONY : src/RunData.cc.o
+
+src/RunData.i: src/RunData.cc.i
+
+.PHONY : src/RunData.i
+
+# target to preprocess a source file
+src/RunData.cc.i:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/src/RunData.cc.i
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/src/RunData.cc.i
+.PHONY : src/RunData.cc.i
+
+src/RunData.s: src/RunData.cc.s
+
+.PHONY : src/RunData.s
+
+# target to generate assembly for a file
+src/RunData.cc.s:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/src/RunData.cc.s
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/src/RunData.cc.s
+.PHONY : src/RunData.cc.s
+
+src/SteppingAction.o: src/SteppingAction.cc.o
+
+.PHONY : src/SteppingAction.o
+
+# target to build an object file
+src/SteppingAction.cc.o:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/src/SteppingAction.cc.o
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/src/SteppingAction.cc.o
+.PHONY : src/SteppingAction.cc.o
+
+src/SteppingAction.i: src/SteppingAction.cc.i
+
+.PHONY : src/SteppingAction.i
+
+# target to preprocess a source file
+src/SteppingAction.cc.i:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/src/SteppingAction.cc.i
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/src/SteppingAction.cc.i
+.PHONY : src/SteppingAction.cc.i
+
+src/SteppingAction.s: src/SteppingAction.cc.s
+
+.PHONY : src/SteppingAction.s
+
+# target to generate assembly for a file
+src/SteppingAction.cc.s:
+	$(MAKE) -f CMakeFiles/caloGAN.dir/build.make CMakeFiles/caloGAN.dir/src/SteppingAction.cc.s
+	$(MAKE) -f CMakeFiles/caloGAN2.dir/build.make CMakeFiles/caloGAN2.dir/src/SteppingAction.cc.s
+.PHONY : src/SteppingAction.cc.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -179,7 +456,35 @@ help:
 	@echo "... install"
 	@echo "... install/local"
 	@echo "... install/strip"
+	@echo "... caloGAN2"
 	@echo "... caloGAN"
+	@echo "... generate.o"
+	@echo "... generate.i"
+	@echo "... generate.s"
+	@echo "... generate2.o"
+	@echo "... generate2.i"
+	@echo "... generate2.s"
+	@echo "... src/ActionInitialization.o"
+	@echo "... src/ActionInitialization.i"
+	@echo "... src/ActionInitialization.s"
+	@echo "... src/DetectorConstruction.o"
+	@echo "... src/DetectorConstruction.i"
+	@echo "... src/DetectorConstruction.s"
+	@echo "... src/EventAction.o"
+	@echo "... src/EventAction.i"
+	@echo "... src/EventAction.s"
+	@echo "... src/PrimaryGeneratorAction.o"
+	@echo "... src/PrimaryGeneratorAction.i"
+	@echo "... src/PrimaryGeneratorAction.s"
+	@echo "... src/RunAction.o"
+	@echo "... src/RunAction.i"
+	@echo "... src/RunAction.s"
+	@echo "... src/RunData.o"
+	@echo "... src/RunData.i"
+	@echo "... src/RunData.s"
+	@echo "... src/SteppingAction.o"
+	@echo "... src/SteppingAction.i"
+	@echo "... src/SteppingAction.s"
 .PHONY : help
 
 
