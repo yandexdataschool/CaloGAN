@@ -25,20 +25,9 @@ SteppingAction::~SteppingAction()
 }
 
 
-pair<int,int> SteppingAction::WhichXYbin(double xpos, double ypos) {
-  G4double moduleSize = 121.2 * mm;
-  G4double cellSize = moduleSize / ecalGranularity;
-  int ix = int (floor(xpos/cellSize)) + ecalGranularity/2;
-  int iy = int (floor(ypos/cellSize)) + ecalGranularity/2;
-  if (ix < 0 || iy < 0 || ix >= ecalGranularity || iy >= ecalGranularity) {
-    return pair<int,int> (-1, -1);
-  }
-  return pair<int,int> (ix, iy);
-}
-
 void SteppingAction::UserSteppingAction(const G4Step* step)
 {
-  // Collect energy and track length step by step
+// Collect energy and track length step by step
 
   // get volume of the current step
    G4VPhysicalVolume* volume 
@@ -51,11 +40,9 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
   G4StepPoint* point1 = step->GetPreStepPoint();
   G4ThreeVector pos1 = point1->GetPosition();
 
-   if (step->GetTrack()->GetTotalEnergy() > 50 * GeV) {
-     //     G4cout << volume->GetName()<< " xyz1="<< pos1.x()<<'/'<<pos1.y()<<'/'<<pos1.z()<< " track energy:"<<step->GetTrack()->GetTotalEnergy() / GeV <<'/'<<edep/GeV<<" GeV, PID: " << step->GetTrack()->GetDefinition()->GetParticleName() << G4endl;
-   }
-
-  pair<int,int> ixy = WhichXYbin(pos1.x(),pos1.y());
+   // if (step->GetTrack()->GetTotalEnergy() > 50 * GeV) {
+   //   G4cout << volume->GetName()<< " xyz1="<< pos1.x()<<'/'<<pos1.y()<<'/'<<pos1.z(<< " track energy:"<<step->GetTrack()->GetTotalEnergy()<<'/'<<edep<<" PID" << step->GetTrack()->GetDefinition()->GetParticleName() << G4endl;
+   // }
 
 
   // G4cout << "sqr " << pos1.z() << " " << pos2.z() << " " << pos1.x() << " " << pos2.x() << " " << edep << " " << step->GetTrack()->GetDefinition()->GetParticleName() << " " << step->GetTrack()->GetKineticEnergy() << G4endl;
@@ -71,9 +58,17 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
     runData->AddAbsDe (edep);
   }
   else if ( volume == fDetConstruction->GetGapPV() ) {
-    if (ixy.first >= 0) {
-      runData->AddSciDe(ixy.first, ixy.second, edep);
-      //      cout << "adding "<<edep/MeV<<" MeV to cell x:y: "<<ixy.first<<':'<<ixy.second<<endl;
+
+    int ix = int (floor(pos1.x()/cellSize)) + calGranularityX/2;
+    int iy = int (floor(pos1.y()/cellSize)) + calGranularityY/2;
+    int iz = int (floor(pos1.z()/layerThickness)) + nLayers/2;
+    iz = int (iz / aggregateLayers);
+		
+    if (ix >= 0 || ix >= calGranularityX ||
+	iy > 0 || iy >= calGranularityY ||
+	iz < 0 || iz >= nLogLayers) {
+      runData->AddSciDe(ix, iy, iz, edep);
+      //      cout << "enter energy: "<<ix<<':'<<iy<<':'<<iz<<" energy: "<<edep<<endl;
     }
   }  
 }

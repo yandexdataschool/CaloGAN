@@ -38,6 +38,9 @@
 #include "G4SystemOfUnits.hh"
 #include <sstream>
 
+#include "constants.hh"
+
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 RunAction::RunAction()
@@ -76,14 +79,16 @@ RunAction::RunAction()
 
   analysisManager->CreateNtuple(fname.c_str(), "Edep and TrackL");
 
-  int total_bins = 5*5*6*6 + 1;  // 3 overflow bins for the three calo layers
-
-  for (int i = 0; i < total_bins; ++i) {
-
-    std::stringstream out;
-    out << i;
-    analysisManager->CreateNtupleDColumn("cell_" + out.str());
+  for (int ix = 0; ix < calGranularityX; ++ix) {
+    for (int iy = 0; iy < calGranularityY; ++iy) {
+      for (int iz = 0; iz < nLogLayers; ++iz) {
+	std::stringstream out;
+	out << "cell_" << iz+nLogLayers*iy+nLogLayers*ix << "_" << ix << "_" << iy << "_"  << iz;
+	//	analysisManager->CreateNtupleDColumn(out.str());
+      }
+    }
   }
+
   analysisManager->CreateNtupleDColumn("TotalEnergy");
   
   analysisManager->CreateNtupleDColumn("Eabs");
