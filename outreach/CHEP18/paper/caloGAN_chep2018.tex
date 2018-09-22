@@ -85,7 +85,7 @@ In practice this ojective is optimized using alternating gradient descent. For a
 
 \begin{figure}
 \centering
-\includegraphics[width=0.3\linewidth]{gan_pic.pdf}
+\includegraphics[width=0.3\linewidth]{figures/gan_pic.pdf}
 \caption{Generative Adversarial Networks for digit generation. The generator $G$ transforms the noise vector $\vz \sim p(z)$ to an image of a digit and the discriminator $D$ classifies inputs as real digits or fake digits from generator. Generator and discriminator are trained in an adversarial manner: the task of $G$ is to make it imporssible for $D$ to distinguish between the real and fake digits as in this case $G$ reproduces the data distribution $\pdata$.}
 \label{fig:GANs}
 \end{figure}
@@ -167,7 +167,7 @@ As for the discriminator, it takes a batch of images as input (all images in the
 
 \begin{figure}
 \centering
-\includegraphics[width=1\textwidth]{model_architecture.pdf}
+\includegraphics[width=1\textwidth]{figures/model_architecture.pdf}
 \caption{Model architecture. Pretrained regressor for the particle parameters prediction makes our model conditional. Thanks to building up the information from the pretrained regressor into the discriminator gradient we learn $G$ to produce a specific calorimeter response.}\label{fig:model}
 \end{figure}
 
@@ -191,22 +191,22 @@ Examples of real and produced images are presented in~\cref{fig:gen-imgs-2}. It 
   \centering
   \begin{subfigure}{0.24\textwidth}
     \centering
-    \includegraphics[width=1\textwidth]{1_real.png}
+    \includegraphics[width=1\textwidth]{figures/1_real.png}
     \caption{\\$E = 63.7~\text{GeV}$ \\ $\frac{p_x}{p_z}=0.005$ \\ $\frac{p_y}{p_z}=0.154$}\label{fig:real-imgs-1}
   \end{subfigure}
   \begin{subfigure}{0.24\textwidth}
     \centering
-    \includegraphics[width=1\textwidth]{2_real.png}
+    \includegraphics[width=1\textwidth]{figures/2_real.png}
     \caption{\\$E = 6.5~\text{GeV}$ \\  $\frac{p_x}{p_z}=0.0046$ \\$\frac{p_y}{p_z}=0.108$}\label{fig:real-imgs-2}
   \end{subfigure}
     \begin{subfigure}{0.24\textwidth}
     \centering
-    \includegraphics[width=1\textwidth]{3_real.png}
+    \includegraphics[width=1\textwidth]{figures/3_real.png}
     \caption{\\$E = 15.6~\text{GeV}$ \\ $\frac{p_x}{p_z}=0.196$ \\ $\frac{p_y}{p_z}=-0.036$}\label{fig:real-imgs-3}
   \end{subfigure}
   \begin{subfigure}{0.24\textwidth}
     \centering
-    \includegraphics[width=1\textwidth]{4_real.png}
+    \includegraphics[width=1\textwidth]{figures/4_real.png}
     \caption{\\$E = 15.6~\text{GeV}$ \\  $\frac{p_x}{p_z}=-0.019$ \\ $\frac{p_y}{p_z}=0.181$}\label{fig:real-imgs-4}
   \end{subfigure}
   \caption{Images and the parameters from the real dataset. \todo{generate high quality images}}
@@ -219,22 +219,22 @@ Examples of real and produced images are presented in~\cref{fig:gen-imgs-2}. It 
   \centering
   \begin{subfigure}{0.24\textwidth}
     \centering
-    \includegraphics[width=1\textwidth]{1_gen.png}
+    \includegraphics[width=1\textwidth]{figures/1_gen.png}
     \caption{\\$E = 63.7~\text{GeV}$ \\ $\frac{p_x}{p_z}=0.005$ \\ $\frac{p_y}{p_z}=0.154$}\label{fig:gen-imgs-1}
   \end{subfigure}
   \begin{subfigure}{0.24\textwidth}
     \centering
-    \includegraphics[width=1\textwidth]{2_gen.png}
+    \includegraphics[width=1\textwidth]{figures/2_gen.png}
     \caption{\\$E = 6.5~\text{GeV}$ \\  $\frac{p_x}{p_z}=0.0046$ \\$\frac{p_y}{p_z}=0.108$}\label{fig:gen-imgs-2}
   \end{subfigure}
     \begin{subfigure}{0.24\textwidth}
     \centering
-    \includegraphics[width=1\textwidth]{3_gen.png}
+    \includegraphics[width=1\textwidth]{figures/3_gen.png}
     \caption{\\$E = 15.6~\text{GeV}$ \\ $\frac{p_x}{p_z}=0.196$ \\ $\frac{p_y}{p_z}=-0.036$}\label{fig:gen-imgs-3}
   \end{subfigure}
   \begin{subfigure}{0.24\textwidth}
     \centering
-    \includegraphics[width=1\textwidth]{4_gen.png}
+    \includegraphics[width=1\textwidth]{figures/4_gen.png}
     \caption{\\$E = 15.6~\text{GeV}$ \\  $\frac{p_x}{p_z}=-0.019$ \\ $\frac{p_y}{p_z}=0.181$}\label{fig:gen-imgs-4}
   \end{subfigure}
   \caption{Images and the parameters from the real dataset. \todo{generate high quality images}}
@@ -249,27 +249,27 @@ As a part of the analyzing generated images quality we calculated some physical 
   \centering
   \begin{subfigure}{0.19\textwidth}
     \centering
-    \includegraphics[width=1\textwidth]{transverseAsymmetry.pdf}
+    \includegraphics[width=1\textwidth]{figures/transverseAsymmetry.pdf}
     \caption{The transverse asymmetry of real and generated images}
   \end{subfigure}
   \begin{subfigure}{0.19\textwidth}
     \centering
-    \includegraphics[width=1\textwidth]{longAsymmetry.pdf}
+    \includegraphics[width=1\textwidth]{figures/longAsymmetry.pdf}
     \caption{The longitudal asymmetry of real and generated images}
   \end{subfigure}
   \begin{subfigure}{0.19\textwidth}
     \centering
-    \includegraphics[width=1\textwidth]{width.pdf}
+    \includegraphics[width=1\textwidth]{figures/width.pdf}
     \caption{The transverse width of real and generated images}
   \end{subfigure}
   \begin{subfigure}{0.19\textwidth}
     \centering
-    \includegraphics[width=1\textwidth]{deltaX.pdf}
+    \includegraphics[width=1\textwidth]{figures/deltaX.pdf}
     \caption{Delta X}
   \end{subfigure}
   \begin{subfigure}{0.19\textwidth}
     \centering
-    \includegraphics[width=1\textwidth]{sparsity.pdf}
+    \includegraphics[width=1\textwidth]{figures/sparsity.pdf}
     \caption{The sparsity of real and generated images}
   \end{subfigure}
   \caption{Generated images quality evaluation including described physical characteristics.}\label{fig:quality}  
