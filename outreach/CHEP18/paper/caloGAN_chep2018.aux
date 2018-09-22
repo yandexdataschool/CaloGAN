@@ -1,0 +1,65 @@
+\relax 
+\bibstyle{woc}
+\citation{agostinelli2003geant4}
+\citation{bozzi2014,flynn2015computing}
+\citation{paganini2017calogan}
+\select@language{english}
+\@writefile{toc}{\select@language{english}}
+\@writefile{lof}{\select@language{english}}
+\@writefile{lot}{\select@language{english}}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}}
+\citation{goodfellow2014generative}
+\citation{radford2015unsupervised}
+\citation{arjovsky2017wasserstein}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related work}{2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Generative models}{2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Generative Adversarial Networks. There are two networks: the generator $G$ which transforms the noise vector to an image and the discriminator $D$ which classifies inputs as real or fake. We train them in adversarial manner, so, the task of $G$ is to make $D$ think that produced images are real. As the result, $G$ learns to reproduce the data distribution.}}{2}}
+\newlabel{fig:GANs}{{1}{2}}
+\newlabel{eq1}{{1}{2}}
+\citation{arjovsky2017wasserstein}
+\citation{gulrajani2017improved}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.1}Wasserstein GAN}{3}}
+\newlabel{wasserstein_metric}{{2}{3}}
+\newlabel{optim}{{3}{3}}
+\newlabel{wgan_loss}{{4}{3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.2}Wasserstain GAN with gradient penalty}{3}}
+\newlabel{gpwgan-loss}{{5}{3}}
+\citation{paganini2017calogan}
+\citation{taigman2014deepface}
+\citation{radford2015unsupervised}
+\citation{de2017learning}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}GANs in high energy physics}{4}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Our model}{4}}
+\newlabel{sec:model}{{3}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Dataset}{4}}
+\citation{arjovsky2017wasserstein}
+\citation{johnson2016perceptual}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Model architecture}{5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Model architecture. Pretrained regressor for the particle parameters prediction makes our model conditional. Thanks to building up the information from the pretrained regressor into the discriminator gradient we learn $G$ to produce a specific calorimeter response.}}{5}}
+\newlabel{fig2:model}{{2}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Training strategy}{6}}
+\newlabel{training_strategy}{{3.3}{6}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Results}{6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Images and the parameters from the real dataset.}}{6}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {E = 63.7~ $\text {GeV}$ \GenericError {               }{LaTeX Error: There's no line here to end}{See the LaTeX manual or LaTeX Companion for explanation.}{Your command was ignored.\MessageBreak Type  I <command> <return>  to replace it with another command,\MessageBreak or  <return>  to continue without it.}\par \let \reserved@d = *\def \par }}}{6}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {E = 6.5~ $\text {GeV}$ \GenericError {               }{LaTeX Error: There's no line here to end}{See the LaTeX manual or LaTeX Companion for explanation.}{Your command was ignored.\MessageBreak Type  I <command> <return>  to replace it with another command,\MessageBreak or  <return>  to continue without it.}\par \let \reserved@d = *\def \par }}}{6}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {E = 15.6 $\text {GeV}$ \GenericError {               }{LaTeX Error: There's no line here to end}{See the LaTeX manual or LaTeX Companion for explanation.}{Your command was ignored.\MessageBreak Type  I <command> <return>  to replace it with another command,\MessageBreak or  <return>  to continue without it.}\par \let \reserved@d = *\def \par }}}{6}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {E = 15.6 $\text {GeV}$ \GenericError {               }{LaTeX Error: There's no line here to end}{See the LaTeX manual or LaTeX Companion for explanation.}{Your command was ignored.\MessageBreak Type  I <command> <return>  to replace it with another command,\MessageBreak or  <return>  to continue without it.}\par \let \reserved@d = *\def \par }}}{6}}
+\newlabel{fig:real-imgs}{{3}{6}}
+\bibdata{main}
+\bibstyle{plain}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Images generated as a response to the parameters described in Fig. \ref  {fig:real-imgs} inputted to the generator $G$. }}{7}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {E = 63.7~ \text {GeV} \GenericError {               }{LaTeX Error: There's no line here to end}{See the LaTeX manual or LaTeX Companion for explanation.}{Your command was ignored.\MessageBreak Type  I <command> <return>  to replace it with another command,\MessageBreak or  <return>  to continue without it.}\par \let \reserved@d = *\def \par }}}{7}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {E = 6.5~ \text {GeV} \GenericError {               }{LaTeX Error: There's no line here to end}{See the LaTeX manual or LaTeX Companion for explanation.}{Your command was ignored.\MessageBreak Type  I <command> <return>  to replace it with another command,\MessageBreak or  <return>  to continue without it.}\par \let \reserved@d = *\def \par }}}{7}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {E = 15.6 Gev \GenericError {               }{LaTeX Error: There's no line here to end}{See the LaTeX manual or LaTeX Companion for explanation.}{Your command was ignored.\MessageBreak Type  I <command> <return>  to replace it with another command,\MessageBreak or  <return>  to continue without it.}\par \let \reserved@d = *\def \par }}}{7}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {E = 15.6 GeV \GenericError {               }{LaTeX Error: There's no line here to end}{See the LaTeX manual or LaTeX Companion for explanation.}{Your command was ignored.\MessageBreak Type  I <command> <return>  to replace it with another command,\MessageBreak or  <return>  to continue without it.}\par \let \reserved@d = *\def \par }}}{7}}
+\newlabel{fig:gen-img}{{4}{7}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Generated images quality evaluation including described physical characteristics.}}{7}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {The transverse asymmetry of real and generated images}}}{7}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {The longitudal asymmetry of real and generated images}}}{7}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {The transverse width of real and generated images}}}{7}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {Delta X}}}{7}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(e)}{\ignorespaces {The sparsity of real and generated images}}}{7}}
+\newlabel{fig:quality}{{5}{7}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion and future outlook}{7}}
+\newlabel{conclusion}{{5}{7}}
