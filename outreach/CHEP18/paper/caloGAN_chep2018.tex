@@ -27,6 +27,8 @@
 \newcommand{\pdata}{\ensuremath{p_{\text{data}}}}
 \newcommand{\todo}[1]{{\color{blue}TODO: #1}}
 
+\begin{document}
+
 \title{Generative Models for Fast Calorimeter Simulation}
 \subtitle{LHCb case}
 
@@ -54,9 +56,8 @@ Skolkovo Institute of Science and Technology, Moscow, Russia
         
 \abstract{Simulation is a key component of high energy physics. Historically simulation in particle physics relies on the Monte Carlo methods which require a tremendous amount of computation. These methods may have difficulties with the expected High Luminosity Large Hadron Collider (HL LHC) need, so the experiment is in urgent need of new fast simulation techniques. We introduce a new Deep Learning framework based on Generative Adversarial Networks which can be faster than traditional simulation methods by 5 order of magnitude with reasonable simulation accuracy. This approach will allow physicists to produce a big enough amount of simulated data needed by the next HL LHC experiments using limited computing resources.}
 
-\begin{document}
 
-% \maketitle
+\maketitle
 
 \section{Introduction}
 Simulation is an important part of studies in particle and nuclear physics from the initial detector design phase to the final comparison with theoretical models. Traditionally, simulations rely on the Monte Carlo methods which require significant computational resources that will not scale to meet the growing demands resulting from large quantities of data expected during High Luminosity Large Hadron Collider (HL LHC) runs. One of the most well known examples of simulation software based on the Monte Carlo methods is \texttt{Geant4} \cite{agostinelli2003geant4} implementing cutting-edge heuristics and algorithms. The detailed simulation of particle collisions and interactions using \texttt{Geant4} as captured by detectors at the LHC annually requires billions of CPU hours constituting more than half of the LHC experiments' computing resources \cite{bozzi2014, flynn2015computing}. More specifically, the detailed simulation of particle showers in calorimeters is the most computationally demanding step.
@@ -66,7 +67,10 @@ Simulation is an important part of studies in particle and nuclear physics from 
 One of the possible approaches to simulate the calorimeter response is using the deep learning techniques. In particular, the Generative Adversarial Networks based approach has been applied sufficiently to the similar task of modeling particle showers in multi-layer Calorimeters with speed-up factors of up to 100 000 \cite{paganini2017calogan}. In our case, a particle is described by 5 parameters: 3d momentum $(p_x,~ p_y,~ p_z)$ and 2d coordinate $(x,~ y)$. We propose a new Deep Learning based framework for high-fidelity fast simulation of particle showers in the specific LHCb calorimeter in order to replace the existing Monte Carlo based methods and achieve a significant speed-up factor.
 
 \section{Related work}
-Generative models are of great interest in deep learning. With these models one can approximate a very complex distribution defined by a set of its samples. For example, such models can be utilized to generate a face image of a never existed person or to continue a video sequence given several initial frames. In this section we give a brief overview of the most popular generative model in computer vision — Generative Adversarial Networks (GANs), its strong and weak sides and different modifications to alleviate its weaknesses. In~\cref{} we review analyze an article about applying GANs to the simulation problem in physics.???
+Generative models are of great interest in deep learning. With these models one can approximate a very complex distribution defined by a set of its samples. 
+For example, such models can be utilized to generate a face image of a never existed person or to continue a video sequence given several initial frames. 
+In this section we give a brief overview of the most popular generative model in computer vision — Generative Adversarial Networks (GANs),
+ its strong and weak sides and different modifications to alleviate its weaknesses. In~\cref{} we review analyze an article about applying GANs to the simulation problem in physics.???
 
 \subsection{Generative Adversarial Networks}
 GANs were originally presented by I.~Goodfellow~\etal in 2014 \cite{goodfellow2014generative} and quickly became a state-of-the-art technique in areas such as image generation \cite{radford2015unsupervised} with huge number of extensions \cite{1,2,3,4}.
@@ -282,8 +286,7 @@ The research proves that Generative Adversarial Networks are a good candidate fo
 
 Future work will be focused improving obtained results such as shower shape characteristics.
 
-\bibliography{main}
-\bibliographystyle{plain}
+\bibliography{caloGAN_chep2018}
 
 \appendix
 
