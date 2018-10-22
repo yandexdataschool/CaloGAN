@@ -1,16 +1,18 @@
-\begin{thebibliography}{11}
-
-\bibitem{agostinelli2003geant4}
-S.~Agostinelli, J.~Allison, K.a. Amako, J.~Apostolakis, H.~Araujo, P.~Arce,
-  M.~Asai, D.~Axen, S.~Banerjee, G.. Barrand et~al., Nuclear instruments and
-  methods in physics research section A: Accelerators, Spectrometers, Detectors
-  and Associated Equipment \textbf{506}, 250 (2003)
+\begin{thebibliography}{12}
 
 \bibitem{bozzi2014}
 C.~Bozzi, Tech. rep. (2014)
 
 \bibitem{flynn2015computing}
 J.~Flynn, Tech. rep. (2015)
+
+\bibitem{grindhammer2000parameterized}
+G.~Grindhammer, S.~Peters, arXiv preprint hep-ex/0001020  (2000)
+
+\bibitem{atlas2010simulation}
+C.~ATLAS, S.~Yamamoto, M.~Shapiro, J.~Virzi, M.~Werner, M.~Venturi,
+  M.~Beckingham, E.~Schmidt, T.~Yamanaka, M.~Duehrssen et~al., Tech. rep.,
+  ATL-COM-PHYS-2010-838 (2010)
 
 \bibitem{paganini2017calogan}
 M.~Paganini, L.~de~Oliveira, B.~Nachman, arXiv preprint arXiv:1705.02355

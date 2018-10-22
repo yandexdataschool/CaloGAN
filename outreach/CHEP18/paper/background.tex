@@ -1,60 +1,94 @@
-\subsection{Generative Adversarial Networks}
-GANs were originally presented by I.~Goodfellow~\etal in 2014 \cite{goodfellow2014generative} and quickly became a state-of-the-art technique in areas such as image generation \cite{radford2015unsupervised} with huge number of extensions \cite{1,2,3,4}.
+\subsection{From GANs to WGANs}
+
+Genarative Adversarial Networks (GANs) were originally presented by I.~Goodfellow~\etal in 2014 \cite{goodfellow2014generative} and quickly became a state-of-the-art technique in areas such as image generation \cite{radford2015unsupervised} with huge number of extensions \todo{\cite{1,2,3,4}}.
 
 
-GANs aim to learn a \textit{generator} $G$ to warp an easy-to-draw distribution $p(\vz)$ (e.g. $p(\vz) = \mathcal{N}(0, I)$ ) into a target distribution $\pdata(x)$. In this case the sampling from target distribution $\pdata(\vx)$ is done by first drawing a sample from the distribution $p(\vz)$ and then feeding it into the generator: $G(\vz) \sim \pdata(\vx)$, where $\vz \sim p(\vz)$. The generator is learned by using a feedback from an external classifier (usually called \textit{discriminator}), which tries to find discrepancy between the target distribution $\pdata(\vx)$ and fake distribution defined by samples from the generator $G(\vz),\, \vz \sim p(\vz)$. The process in summarized in~\cref{fig:GANs}.
+In the GAN framework the aim is to learn a \textit{generator} $G$ to warp an easy-to-draw distribution $p(\vz)$ (e.g. $p(\vz) = \mathcal{N}(0, I)$ ) into a target distribution $\pdata(\vx)$. In this case the sampling from target distribution $\pdata(\vx)$ is done by first drawing a sample from the distribution $p(\vz)$ and then feeding it into the generator: $G(\vz) \sim \pdata(\vx)$, where $\vz \sim p(\vz)$. For such sampling procedure, the time needed to draw a sample from $\pdata(\vx)$ is approximately equal to the time needed to evaluate the function $G$ in a point.  
+
+The generator is learned by using a feedback from an external classifier (usually called \textit{discriminator}), which tries to find discrepancy between the target distribution $\pdata(\vx)$ and fake distribution defined by samples from the generator $G(\vz),\, \vz \sim p(\vz)$. The process in summarized in~\cref{fig:GANs}.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.3\linewidth]{figures/gan_pic.pdf}
+\caption{Generative Adversarial Networks for digit generation. The generator $G$ transforms the noise vector $\vz \sim p(z)$ to an image of a digit and the discriminator $D$ classifies inputs as real digits or fake digits from generator. Generator and discriminator are trained in an adversarial manner: the task of $G$ is to make it imporssible for $D$ to distinguish between the real and fake digits as in this case $G$ reproduces the data distribution $\pdata$.}\label{fig:GANs}
+\end{figure}
+
 
 More formally, generator $G$ and discriminator $D$  ... game : 
 \begin{equation}\label{eq:gan}
-\min_G \max_D \mathbb{E}_{\vx \sim \pdata} [\log D(\vx)] + \mathbb{E}_{\vz \sim p(\vz)} [\log(1 - D(G(\vz)))],
+\min_G \max_D \E_{\vx \sim \pdata(\vx)} [\log D(\vx)] + \E_{\vz \sim p(\vz)} [\log(1 - D(G(\vz)))],
 \end{equation} 
 where $\vx \sim \pdata(\vx)$ are samples from the input data, $\vz \sim p(\vz)$ are the random noise samples, $G(\vz)$ are the generated images and $D(G(\vz))$ is the output of the discriminator specifying the probability of its input to belong to class <<real>>.
 
 In practice this ojective is optimized using alternating gradient descent. For a fixed generator, the discriminator minimizes binary cross-entropy in a binary classification problem (samples from target distribution versus samples from generator a.k.a. fake distribution). For a fixed discriminator, generator is updated to make its samples to be misclassified by discriminator, thus moving fake distribution closer to the target.   
 
+It is possible to show, that for a fixed generator the solution for the inner optimization can be written analitically: 
+\begin{equation}\label{eq:gan}
+\max_D \E_{\vx \sim \pdata(\vx)} [\log D(\vx)] + \E_{\vz \sim p(\vz)} [\log(1 - D(G(\vz)))] = \text{JS}( \pdata(\vx) \| \pfake(\vx))
+\end{equation} 
+where $JS$ is Jenson-Shennon divergence. 
 
-\begin{figure}
-\centering
-\includegraphics[width=0.3\linewidth]{figures/gan_pic.pdf}
-\caption{Generative Adversarial Networks for digit generation. The generator $G$ transforms the noise vector $\vz \sim p(z)$ to an image of a digit and the discriminator $D$ classifies inputs as real digits or fake digits from generator. Generator and discriminator are trained in an adversarial manner: the task of $G$ is to make it imporssible for $D$ to distinguish between the real and fake digits as in this case $G$ reproduces the data distribution $\pdata$.}
-\label{fig:GANs}
-\end{figure}
+The interpretation is the following: for the fixed generator, the discriminator computes the divergence between the target and fake distributions, while the generator aims to update fake distribution to make this divergence lower:
 
-% The training procedure for GANs is typically based on applying gradient descent in turn to the discriminator and the generator in order to minimize a loss function which serves as a substitute to the exact formulation based on finding a Nash equilibrium in a non-convex game:
-% \begin{equation}\label{eq1}
-% \min_G \max_D \mathbb{E}_{\vx \sim \pdata} [\log D(\vx)] + \mathbb{E}_{\vz \sim p(\vz)} [\log(1 - D(G(\vz)))],
+\begin{equation}\label{eq:ganJS}
+\min_G \text{JS}( \pdata(\vx) \| \pfake(\vx))
+\end{equation} 
+
+While Jenson-Shennon divergence arises from the original \label{eq:gan}, any divergence or distance can be used instead.
+
+I recent work~\cite{arjovsky2017wasserstein} proposed to use \textit{Wasserstein distance} and proved ... 
+
+\begin{equation}\label{eq:wasserstein_metric}
+W(\pdata(\vx) \| \pfake(\vx) ) = \max_{f \in \mathbb{F}} \E_{\vx \sim \pdata(\vx)}[f(\vx)] - \E_{\vx \sim \pfake} [f(\vx)]
+\end{equation}
+where $\mathbb{F}$ is a set of 1-Lipshitz functions.
+
+which leadas to the following game: 
+
+
+\begin{equation}\label{eq:wasserstein_metric}
+\min_G \max_{f \in \mathbb{F}} \E_{\vx \sim \pdata(\vx)}[f(\vx)] - \E_{\vz \sim p(\vz)} [f(G(\vz))]
+\end{equation}
+
+% When parametri
+\begin{equation} \label{gpwgan-loss}
+\begin{gathered}
+\mathcal{L}(\bm{\theta}) =
+\underbrace{ \underset{\tilde{\vx} \sim \mathbb{P}_g}{\mathbb{E}}  \Big[D(\tilde{\vx})\Big] - \underset{\vx \sim \mathbb{P}_r}{\mathbb{E}} \Big[D(\vx)\Big]}_{\text{original loss}} + 
+\underbrace{ \lambda \underset{\vx \sim \mathbb{P}_g}{\mathbb{E}} \Big[\big(\|\nabla_{\tilde{\vx}} D(\tilde{\vx})\|_2 - 1\big)^2 \Big]}_{\text{gradient penalty}}.
+\end{gathered}
+\end{equation}
+
+
+
+
+% \subsubsection{Wasserstein GAN}
+% There are various modifications of GANs for struggling with some typical problems and for improving the training procedure. A common GANs issue is so--called mode collapse when $p_\text{model} (\vx)$ fails to capture a multimodal nature of $\pdata(\vx)$ and in extreme cases all the generated samples might be identical, in more involved architectures such as Waserstain GAN \cite{arjovsky2017wasserstein} the discriminator loss is argued to be consistent with the image quality. The main idea is to apply the Wasserstein-1 distance in order to compare $\pdata$ and $p_{\text{model}}$.
+
+% Let $\mathbb{X}$ be a compact metric set and let $\mathbb{B}$ denote the set of all the Borel subsets of $\mathbb{X}$. Let $Prob(\mathbb{X})$ denote the space of probability measures defined on $\mathbb{X}$. The \emph{Earth-Mover} or \emph{Wasserstein-1} distance between two distributions $\mathbb{P}_r, \mathbb{P}_g \in Prob(\mathbb{X})$ is defined in the following way:
+
+% \begin{equation}\label{wasserstein_metric}
+% W(\mathbb{P}_r, \mathbb{P}_g) = \inf_{\gamma \in \Pi(\mathbb{P}_r, \mathbb{P}_g)} \mathbb{E}_{(x, y) \sim \gamma} \big{[}\|\vx-\textbf{y}\|\big{]},
 % \end{equation}
-% where $\vx \sim \pdata$ are samples from the input data, $\vz \sim p(\vz)$ are the random noise samples, $G(\vz)$ are the generated images and $D(G(\vz))$ is the output of the discriminator specifying the probability of an input being real.
 
-% While other generative models exist GANs have recommended themselves as are a In practice, this method ends up with generative neural nets that are considerably effective at producing new data. The main benefit of this approach is that GANs training procedure is easier in contrast with previous probabilistic models like Boltzmann machines.
+% where $\Pi(\mathbb{P}_r, \mathbb{P}_g)$ is the set of all joint distributions $\gamma(x, y)$ whose marginals are respectively $\mathbb{P}_r$ and $\mathbb{P}_g$. $\gamma(x, y)$ denotes how much “mass” must be transported from $x$ to $y$ in order to transform the distributions $\mathbb{P}_r$ into the distribution $\mathbb{P}_g$. Thus, the Wasserstein distance can be defined as the minimum cost of transporting mass in order to transform the distribution $\mathbb{P}_r$ into the distribution $\mathbb{P}_q$. 
 
-\subsubsection{Wasserstein GAN}
-There are various modifications of GANs for struggling with some typical problems and for improving the training procedure. A common GANs issue is so--called mode collapse when $p_\text{model} (\vx)$ fails to capture a multimodal nature of $\pdata(\vx)$ and in extreme cases all the generated samples might be identical, in more involved architectures such as Waserstain GAN \cite{arjovsky2017wasserstein} the discriminator loss is argued to be consistent with the image quality. The main idea is to apply the Wasserstein-1 distance in order to compare $\pdata$ and $p_{\text{model}}$.
+% By applying to this distance the \emph{Kullback--Leibler divergence}, the \emph{Jensen-Shannon divergence} and the Kantorovich--Rubinstein duality and also parameterization of family of functions $\{f_w\}_{w \in \mathcal{W}}$ that are all K-Lipschitz for some K we could consider solving the problem (for more detailed information see the paper \cite{arjovsky2017wasserstein})
 
-Let $\mathbb{X}$ be a compact metric set and let $\mathbb{B}$ denote the set of all the Borel subsets of $\mathbb{X}$. Let $Prob(\mathbb{X})$ denote the space of probability measures defined on $\mathbb{X}$. The \emph{Earth-Mover} or \emph{Wasserstein-1} distance between two distributions $\mathbb{P}_r, \mathbb{P}_g \in Prob(\mathbb{X})$ is defined in the following way:
+% \begin{equation}\label{optim}
+% \max_{w \in \mathcal{W}} \mathbb{E}_{x \sim P_r}[f_w(x)] - \mathbb{E}_{z\sim p(z)} [f_w(g_\theta(z))]
+% \end{equation}
 
-\begin{equation}\label{wasserstein_metric}
-W(\mathbb{P}_r, \mathbb{P}_g) = \inf_{\gamma \in \Pi(\mathbb{P}_r, \mathbb{P}_g)} \mathbb{E}_{(x, y) \sim \gamma} \big{[}\|\vx-\textbf{y}\|\big{]},
-\end{equation}
+% and if the supremum in \eqref{optim} is attained for some $w \in \mathcal{W}$, this process would lead to a calculation of $W(\mathbb{P}_r, \mathbb{P}_\theta)$ up to a multiplicative constant.
+% So, the WGAN value function is
+% \begin{equation}\label{wgan_loss}
+% \min_G \max_{D \in \mathcal{D}}  \mathbb{E}_{\vx \sim \mathbb{P}_r}  [D(\vx)] - \mathbb{E}_{\tilde{\vx} \sim \mathbb{P}_g} [D(\tilde{\vx})],
+% \end{equation}
+% where $\mathcal{D}$ is the set of 1-Lipschitz functions and $\mathbb{P}_g$ is  the model distribution defined by $\tilde{\vx} = G(\vz), ~\vz \sim p(\vz).$
 
-where $\Pi(\mathbb{P}_r, \mathbb{P}_g)$ is the set of all joint distributions $\gamma(x, y)$ whose marginals are respectively $\mathbb{P}_r$ and $\mathbb{P}_g$. $\gamma(x, y)$ denotes how much “mass” must be transported from $x$ to $y$ in order to transform the distributions $\mathbb{P}_r$ into the distribution $\mathbb{P}_g$. Thus, the Wasserstein distance can be defined as the minimum cost of transporting mass in order to transform the distribution $\mathbb{P}_r$ into the distribution $\mathbb{P}_q$. 
+% In general, the training procedure of GANs is known to be difficult and presents such issues as mode collapse, and WGAN often helps to overcome this problem.
 
-By applying to this distance the \emph{Kullback--Leibler divergence}, the \emph{Jensen-Shannon divergence} and the Kantorovich--Rubinstein duality and also parameterization of family of functions $\{f_w\}_{w \in \mathcal{W}}$ that are all K-Lipschitz for some K we could consider solving the problem (for more detailed information see the paper \cite{arjovsky2017wasserstein})
-
-\begin{equation}\label{optim}
-\max_{w \in \mathcal{W}} \mathbb{E}_{x \sim P_r}[f_w(x)] - \mathbb{E}_{z\sim p(z)} [f_w(g_\theta(z))]
-\end{equation}
-
-and if the supremum in \eqref{optim} is attained for some $w \in \mathcal{W}$, this process would lead to a calculation of $W(\mathbb{P}_r, \mathbb{P}_\theta)$ up to a multiplicative constant.
-So, the WGAN value function is
-\begin{equation}\label{wgan_loss}
-\min_G \max_{D \in \mathcal{D}}  \mathbb{E}_{\vx \sim \mathbb{P}_r}  [D(\vx)] - \mathbb{E}_{\tilde{\vx} \sim \mathbb{P}_g} [D(\tilde{\vx})],
-\end{equation}
-where $\mathcal{D}$ is the set of 1-Lipschitz functions and $\mathbb{P}_g$ is  the model distribution defined by $\tilde{\vx} = G(\vz), ~\vz \sim p(\vz).$
-
-In general, the training procedure of GANs is known to be difficult and presents such issues as mode collapse, and WGAN often helps to overcome this problem.
-
-The Wasserstein GAN value function makes optimization process easier because the discriminator's gradient with respect to its input is better behaved than its GAN counterpart. Also, it was noticed that the WGAN value function tend to correlate with the original data quality which is not always the case for ordinary GANs.
+% The Wasserstein GAN value function makes optimization process easier because the discriminator's gradient with respect to its input is better behaved than its GAN counterpart. Also, it was noticed that the WGAN value function tend to correlate with the original data quality which is not always the case for ordinary GANs.
 
 
 \subsubsection{Wasserstain GAN with gradient penalty}
