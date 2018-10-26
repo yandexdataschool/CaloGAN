@@ -11,8 +11,9 @@
 \usepackage{bm}
 \usepackage{xcolor}
 
-\newcommand{\onedot}{\futurelet\@let@token\@onedot}
-% \newcommand{\@onedot}{\ifx\@let@token.\else.\null\fi\xspace}
+% \newcommand{\onedot}{\futurelet\@let@token\@onedot}
+
+\newcommand{\onedot}{.\\}
 
 \newcommand{\eg}{\emph{e.g}\onedot} \newcommand{\Eg}{\emph{E.g}\onedot}
 \newcommand{\ie}{\emph{i.e}\onedot} \newcommand{\Ie}{\emph{I.e}\onedot}
@@ -24,6 +25,9 @@
 
 \newcommand{\vx}{\ensuremath{\mathbf{x}}}
 \newcommand{\vz}{\ensuremath{\mathbf{z}}}
+\newcommand{\vy}{\ensuremath{\mathbf{y}}}
+
+\newcommand{\f}{f}
 
 \newcommand{\dsep}{\ensuremath{\;\|\;}}
 

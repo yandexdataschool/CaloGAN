@@ -3,58 +3,54 @@
 Generative Adversarial Networks (GANs) were originally presented by I.~Goodfellow~\etal in 2014 \cite{goodfellow2014generative} and quickly became a state-of-the-art technique in areas such as image generation \cite{radford2015unsupervised} with huge number of extensions \todo{\cite{1,2,3,4}}.
 
 
-In the GAN framework the aim is to learn a \textit{generator} $G$ to warp an easy-to-draw distribution $p(\vz)$ (e.g. $p(\vz) = \mathcal{N}(0, I)$ ) into a target distribution $\pdata(\vx)$ to facilitate sampling from $\pdata(\vx)$. When $G$ is learned $G \equiv G^*$, sampling from the target distribution $\pdata(\vx)$ is done by first drawing a sample from the distribution $p(\vz)$ and then feeding the sample into the generator: $G^*(\vz) \sim \pdata$, where $\vz \sim p(\vz)$. For such sampling procedure, the time needed to draw a sample from $\pdata(\vx)$ is approximately equal to the time needed to evaluate the function $G$ in a point.  
+In the GAN framework the aim is to learn a mapping $G$, usually called \textit{generator}, to warp an easy-to-draw distribution $p(\vz)$ (e.g. $p(\vz) = \mathcal{N}(0, I)$) into a target distribution $\pdata(\vx)$ to facilitate sampling from $\pdata(\vx)$. When $G$ is learned $G \equiv G^*$, sampling from the target distribution $\pdata(\vx)$ is done by first drawing a sample from the distribution $p(\vz)$ and then feeding the sample into the generator: $G^*(\vz) \sim \pdata$, where $\vz \sim p(\vz)$. For such sampling procedure, the time needed to draw a sample from $\pdata(\vx)$ is approximately equal to the time needed to evaluate the function $G$ in a point.  
 
-The generator is learned by using a feedback from an external classifier (usually called \textit{discriminator}), which tries to find discrepancy between the target distribution $\pdata(\vx)$ and fake distribution $\pfake(\vx)$ defined by samples from the generator $G(\vz) \sim \pfake,\, \vz \sim p(\vz)$. The process in summarized in~\cref{fig:GANs}.
+The generator is learned by using a feedback from an external classifier (usually called \textit{discriminator}), which tries to find discrepancy between the target distribution $\pdata(\vx)$ and fake distribution $\pfake(\vx)$ defined by samples from the generator $G(\vz) \sim \pfake(\vx),\, \vz \sim p(\vz)$. %The process in summarized in~\cref{fig:GANs}.
 
-\begin{figure}
-\centering
-\includegraphics[width=0.3\linewidth]{figures/gan_pic.pdf}
-\caption{Generative Adversarial Networks for digit generation. The generator $G$ transforms the noise vector $\vz \sim p(z)$ to an image of a digit and the discriminator $D$ classifies inputs as real digits or fake digits from generator. Generator and discriminator are trained in an adversarial manner: the task of $G$ is to make it impossible for $D$ to distinguish between the real and fake digits as in this case $G$ reproduces the data distribution $\pdata$.}\label{fig:GANs}
-\end{figure}
+% \begin{figure}
+% \centering
+% \includegraphics[width=0.3\linewidth]{figures/gan_pic.pdf}
+% \caption{Generative Adversarial Networks for digit generation. The generator $G$ transforms the noise vector $\vz \sim p(z)$ to an image of a digit and the discriminator $D$ classifies inputs as real digits or fake digits from generator. Generator and discriminator are trained in an adversarial manner: the task of $G$ is to make it impossible for $D$ to distinguish between the real and fake digits as in this case $G$ reproduces the data distribution $\pdata$.}\label{fig:GANs}
+% \end{figure}
 
 
 More formally, generator $G$ and discriminator $D$ play the following zero sum game: 
 \begin{equation}\label{eq:gan}
-\min_G \max_D \E_{\vx \sim \pdata(\vx)} [\log D(\vx)] + \E_{\vx \sim \pfake(\vx)} [\log(1 - D(\vx))],
+\min_G \max_D \E_{\vx \sim \pdata(\vx)} [\log D(\vx)] + \E_{\vx \sim \pfake(\vx)} [\log(1 - D(\vx))]\, ,
 \end{equation} 
-where $D(G(\vz))$ is the output of the discriminator specifying the probability of its input to come be sampled from the target distribution.
+where $D(G(\vz))$ is the output of the discriminator specifying the probability of its input to come from the target distribution $\pdata$.
 
-In practice $G$ and $D$ are parametrized by deep neural networks and the objective~\cref{eq:gan} is optimized using alternating gradient descent. For a fixed generator, the discriminator minimizes binary cross-entropy in a binary classification problem (samples from target distribution versus samples from fake distribution). For a fixed discriminator, generator is updated to make its samples to be misclassified by discriminator, thus moving fake distribution closer to the target.   
+In practice the mappings $G$ and $D$ are parametrized by deep neural networks and the objective~\cref{eq:gan} is optimized using alternating gradient descent. For a fixed generator, the discriminator minimizes binary cross-entropy in a binary classification problem (samples from $\pdata$ versus samples from $\pfake$). For a fixed discriminator, generator is updated to make its samples to be misclassified by discriminator, thus moving fake distribution closer to the target distribution.   
 
 It is possible to show, that for a fixed generator the optimal value for the inner optimization can be written analytically: 
 \begin{equation}\label{eq:js}
-\max_D \E_{\vx \sim \pdata(\vx)} [\log D(\vx)] + \E_{\vx \sim \pfake(\vx)} [\log(1 - D(\vx))] = \text{JS}( \pdata \dsep \pfake)
+\max_D \E_{\vx \sim \pdata(\vx)} [\log D(\vx)] + \E_{\vx \sim \pfake(\vx)} [\log(1 - D(\vx))] = \text{JS}( \pdata \dsep \pfake)\, , 
 \end{equation} 
-where $\text{JS}$ is Jenson-Shennon divergence. In fact, for a fixed generator (hence fake distribution), the discriminator computes the divergence between the target and fake distributions. When the divergence is computed, the generator aims to update fake distribution to make this divergence lower: $\min_G \text{JS}( \pdata \dsep \pfake )$. While Jenson-Shennon divergence naturally arises from the original~\cref{eq:gan}, any divergence or distance $\mathcal{D}$ can be used instead: $\min_G \mathcal{D}( \pdata \dsep \pfake )$.
+where $\text{JS}$ is Jensen-Shannon divergence. In fact, for a fixed generator (hence fixed fake distribution), the discriminator computes the divergence between the target distribution $\pdata$ and the fake distribution $\pfake$. When the divergence is computed, the generator aims to update fake distribution to make this divergence lower: $\min_G \text{JS}( \pdata \dsep \pfake )$. While Jensen-Shannon divergence naturally arises from the original game~\cref{eq:gan}, any divergence or distance $\mathcal{D}$ can be used instead: $\min_G \mathcal{D}( \pdata \dsep \pfake )$.
 
-A recent work~\cite{arjovsky2017wasserstein} proposed to use \textit{Wasserstein distance} and proved ... 
-
+A recent work~\cite{arjovsky2017wasserstein} proposed to use \textit{Wasserstein distance} instead of Jensen-Shannon divergence proving its better behavior:
 \begin{equation}\label{eq:wasserstein_metric}
-W(\pdata \dsep \pfake ) = \max_{f \in \mathcal{F}} \E_{\vx \sim \pdata(\vx)}[f(\vx)] - \E_{\vx \sim \pfake} [f(\vx)]
+W(\pdata \dsep \pfake ) = \max_{\f \in \mathcal{F}} \E_{\vx \sim \pdata(\vx)}[\f(\vx)] - \E_{\vx \sim \pfake} [\f(\vx)]
 \end{equation}
-where $\mathcal{F}$ is a set of 1-Lipshitz functions. Using Wasserstein distance instead of Jenson-Shennon divergence in a GAN objective leads to the following game: 
-
+where $\mathcal{F}$ is a set of 1-Lipshitz functions. Using Wasserstein distance instead of Jensen-Shannon divergence in a GAN objective leads to the Wasserstein GAN (WGAN) objective: 
 \begin{equation}\label{eq:wgan}
-\min_G \max_{f \in \mathcal{F}} \E_{\vx \sim \pdata(\vx)}[f(\vx)] - \E_{\vx \sim \pfake(\vx)} [f(\vx)]
+\min_G \max_{\f \in \mathcal{F}} \E_{\vx \sim \pdata(\vx)}[\f(\vx)] - \E_{\vx \sim \pfake(\vx)} [\f(\vx)]\, .
 \end{equation}
 
-It is highly non-trivial to search over a set of 1-Lipshitz functions and several ways has been proposed in order to force this constraint \cite{arjovsky2017wasserstein,gulrajani2017improved}. \cite{gulrajani2017improved} proved, that among optimal functions for~\cref{eq:wasserstein_metric} there exists such, that norm of it's gradient in any point equals one. To make it practical this constraint is relaxed and added to the main objective while $f$ is searched over all possible functions:    
-
-% When parametri
-% \begin{equation}\label{gpwgan-loss}
-% \begin{gathered}
-% \mathcal{L}(\bm{\theta}) =
-% \underbrace{ \underset{\vx \sim \pdata(\vx)}{\E}  \Big[f(\tilde{\vx})\Big] - \underset{\vx \sim \mathbb{P}_r}{\mathbb{E}} \Big[D(\vx)\Big]}_{\text{original loss}} + 
-% \underbrace{ \lambda \underset{\vx \sim \mathbb{P}_g}{\mathbb{E}} \Big[\big(\|\nabla_{\tilde{\vx}} D(\tilde{\vx})\|_2 - 1\big)^2 \Big]}_{\text{gradient penalty}}.
-% \end{gathered}
-% \end{equation}
-
+It is highly non-trivial to search over the set of 1-Lipshitz functions and several ways has been proposed in order to force this constraint \cite{arjovsky2017wasserstein,gulrajani2017improved}. \cite{gulrajani2017improved} proved, that the set of optimal functions for~\cref{eq:wgan} contains such function, that norm of it's gradient in any point equals one. In practice this result motivates an additional loss added to the objective~\cref{eq:wgan} with a weight $\lambda$ while the hard constraint on the function $\f$ to belong to the set $\mathcal{F}$ is removed and $\f$ is searched over all possible functions:    
 \begin{equation}\label{gpwgan-loss}
-\begin{gathered}
-\min_G \max_f \E_{\vx \sim \pdata(\vx)}  f(\vx) - \E_{\vx \sim \pfake(\vx)} f(\vx) + 
+% \begin{gathered}
+\min_G \max_\f \E_{\vx \sim \pdata(\vx)}  \f(\vx) - \E_{\vx \sim \pfake(\vx)} \f(\vx) + 
 \lambda \E_{\vx \sim \pfake} \big(\|\nabla_{\tilde{\vx}} D(\tilde{\vx})\|_2 - 1\big)^2 .
-\end{gathered}
+% \end{gathered}
+\end{equation}
+
+WGAN can be easily adapted to model a conditional distribution $\pdata(\vx | \vy)$. The generator is modified to take the condition along with the sample $\vz$ so the fake distribution is now defined as $G(\vz, \vy) \sim \pfake(\vx | \vy),\, \vz \sim p(\vz)$ and the game is 
+\begin{equation}\label{CWGAN}
+% \begin{gathered}
+\min_G \max_\f \E_{\vy \sim p(\vy)} \Big[ \E_{\vx \sim \pdata(\vx | \vy)}  \f(\vx) - \E_{\vx \sim \pfake(\vx | \vy)} \f(\vx) + 
+\lambda \E_{\vx \sim \pfake(\vx | \vy)} \big(\|\nabla_{\tilde{\vx}} D(\tilde{\vx})\|_2 - 1\big)^2 \Big]\,.
+% \end{gathered}
 \end{equation}
 
 
