@@ -1,4 +1,4 @@
-\begin{thebibliography}{13}
+\begin{thebibliography}{16}
 
 \bibitem{bozzi2014}
 C.~Bozzi, Tech. rep. (2014)
@@ -18,9 +18,6 @@ C.~ATLAS, S.~Yamamoto, M.~Shapiro, J.~Virzi, M.~Werner, M.~Venturi,
 M.~Paganini, L.~de~Oliveira, B.~Nachman, arXiv preprint arXiv:1705.02355
   (2017)
 
-\bibitem{Alves:2008zz}
-A.A. Alves~Jr. et~al. (LHCb collaboration), JINST \textbf{3}, S08005 (2008)
-
 \bibitem{goodfellow2014generative}
 I.~Goodfellow, J.~Pouget-Abadie, M.~Mirza, B.~Xu, D.~Warde-Farley, S.~Ozair,
   A.~Courville, Y.~Bengio, \emph{Generative adversarial nets}, in
@@ -29,6 +26,18 @@ I.~Goodfellow, J.~Pouget-Abadie, M.~Mirza, B.~Xu, D.~Warde-Farley, S.~Ozair,
 
 \bibitem{radford2015unsupervised}
 A.~Radford, L.~Metz, S.~Chintala, arXiv preprint arXiv:1511.06434  (2015)
+
+\bibitem{IsolaZZE16}
+P.~Isola, J.~Zhu, T.~Zhou, A.A. Efros, CoRR \textbf{abs/1611.07004} (2016)
+
+\bibitem{CycleGAN2017}
+J.Y. Zhu, T.~Park, P.~Isola, A.A. Efros, \emph{Unpaired Image-to-Image
+  Translation using Cycle-Consistent Adversarial Networks}, in \emph{Computer
+  Vision (ICCV), 2017 IEEE International Conference on} (2017)
+
+\bibitem{wang2018video}
+T.C. Wang, M.Y. Liu, J.Y. Zhu, G.~Liu, A.~Tao, J.~Kautz, B.~Catanzaro, arXiv
+  preprint arXiv:1808.06601  (2018)
 
 \bibitem{arjovsky2017wasserstein}
 M.~Arjovsky, S.~Chintala, L.~Bottou, arXiv preprint arXiv:1701.07875  (2017)
@@ -47,6 +56,9 @@ Y.~Taigman, M.~Yang, M.~Ranzato, L.~Wolf, \emph{Deepface: Closing the gap to
 \bibitem{de2017learning}
 L.~de~Oliveira, M.~Paganini, B.~Nachman, arXiv preprint arXiv:1701.05927
   (2017)
+
+\bibitem{Alves:2008zz}
+A.A. Alves~Jr. et~al. (LHCb collaboration), JINST \textbf{3}, S08005 (2008)
 
 \bibitem{johnson2016perceptual}
 J.~Johnson, A.~Alahi, L.~Fei-Fei, \emph{Perceptual losses for real-time style
