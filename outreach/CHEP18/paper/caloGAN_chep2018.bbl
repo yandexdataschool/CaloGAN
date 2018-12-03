@@ -1,4 +1,4 @@
-\begin{thebibliography}{16}
+\begin{thebibliography}{17}
 
 \bibitem{bozzi2014}
 C.~Bozzi, Tech. rep. (2014)
@@ -64,5 +64,10 @@ A.A. Alves~Jr. et~al. (LHCb collaboration), JINST \textbf{3}, S08005 (2008)
 J.~Johnson, A.~Alahi, L.~Fei-Fei, \emph{Perceptual losses for real-time style
   transfer and super-resolution}, in \emph{European Conference on Computer
   Vision} (Springer, 2016), pp. 694--711
+
+\bibitem{pytorch}
+\emph{Pytorch version 0.4.0},
+  \url{http://download.pytorch.org/whl/cu90/torch-0.4.0-cp36-cp36m-linux_x86_64.whl}
+  (2018)
 
 \end{thebibliography}
