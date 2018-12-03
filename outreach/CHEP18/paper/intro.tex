@@ -4,12 +4,12 @@ Simulation plays an important role in particle and nuclear physics. It is widely
  
 A line of simulation methods that exploit the idea of reusing previously calculated or measured physical quantities have been developed to reduce the computation time~\cite{grindhammer2000parameterized,atlas2010simulation}. These approach suffers from being specific to an individual experiment and, despite being faster than the full simulation, they still take relatively long to apply. Thus, the particle physics community is in need of new faster simulation methods to model experiments. 
     
-One of the possible approaches to simulate the calorimeter response is using the \textit{deep learning} techniques. In particular, a recent work, CaloGAN~\cite{paganini2017calogan}, provided an evidence that \textit{Generative Adversarial Networks} can be used to efficiently simulate particle showers. While over $100,000 \times$ speed-up over \geant is achieved, the setup was quite simple as the input particles were parametrized by energy only. However,  even in this simplifyed approach there are significant differences in distributions between generated and original parameters. 
+One of the possible approaches to simulate the calorimeter response is using the \textit{deep learning} techniques. In particular, a recent work, CaloGAN~\cite{paganini2017calogan}, provided an evidence that \textit{Generative Adversarial Networks} can be used to efficiently simulate particle showers. While over $100,000 \times$ speed-up over \geant is achieved, the setup was quite simple as the input particles were parametrized by energy only. However,  even in this simplified approach there are significant differences in distributions between generated and original parameters. 
 
-In this work we build a model upon \text{Wasserstein Generative Advesarial Networks} and show its superior performance over CaloGAN. We also evaluate our model in a more complex scenario, when a particle is described by $5$ parameters: 3d momentum $(p_x,~ p_y,~ p_z)$ and 2d coordinate $(x,~ y)$. Our method for high-fidelity fast simulation of particle showers in the specific LHCb calorimeter aims to replace the existing Monte Carlo based methods and achieve a significant speed-up factor.
+In this work we build a model upon \text{Wasserstein Generative Adversarial Networks} and show its superior performance over CaloGAN. We also evaluate our model in a more complex scenario, when a particle is described by $5$ parameters: 3d momentum $(p_x,~ p_y,~ p_z)$ and 2d coordinate $(x,~ y)$. Our method for high-fidelity fast simulation of particle showers in the specific LHCb calorimeter aims to replace the existing Monte Carlo based methods and achieve a significant speed-up factor.
  
 
-% Our contirubtion is three fold: 
+% Our contribution is three fold: 
 
 % \begin{itemize}
 %     \item We build and extensively evaluate a simupropose a  

@@ -14,13 +14,13 @@ As for the discriminator, it takes a batch of images as input (all images in the
 \begin{figure}
 \centering
 \includegraphics[width=1\textwidth]{figures/model_architecture.pdf}
-\caption{Model architecture. Pretrained regressor for the particle parameters prediction makes our model conditional. Thanks to building up the information from the pretrained regressor into the discriminator gradient we learn $G$ to produce a specific calorimeter response.}\label{fig:model}
+\caption{Model architecture. Pre-trained regressor for the particle parameters prediction makes our model conditional. Thanks to building up the information from the pre-trained regressor into the discriminator gradient we learn $G$ to produce a specific calorimeter response.}\label{fig:model}
 \end{figure}
 
 How to train WGAN with gradient penalty in conditional manner is described in the following section.
 
 \subsection{Training strategy} \label{sec:training_strategy}
-Due to the nature of WGAN loss, conditioning on the continuous value is a non-trivial task. To overcome this issue we suggest to embed a pretrained regressor in our model. We train a neural network to predict the particle parameters by the calorimeter response. As for architecture, it has the same one as the discriminator but with a perceptual loss described in \cite{johnson2016perceptual} because, as we figured out, it works better rather than standard MSE. By building up the information from the pretrained regressor into the discriminator gradient, we obtain the conditional model because we train the generator and the discriminator together. Now the discriminator makes the generator produce a specific calorimeter response.
+Due to the nature of WGAN loss, conditioning on the continuous value is a non-trivial task. To overcome this issue we suggest to embed a pre-trained regressor in our model. We train a neural network to predict the particle parameters by the calorimeter response. As for architecture, it has the same one as the discriminator but with a perceptual loss described in \cite{johnson2016perceptual} because, as we figured out, it works better rather than standard MSE. By building up the information from the pre-trained regressor into the discriminator gradient, we obtain the conditional model because we train the generator and the discriminator together. Now the discriminator makes the generator produce a specific calorimeter response.
 
 Matrices from our dataset are pretty sparse because almost all information is located in central cells (see~\cref{fig:real-imgs}). To make optimization process easier we apply a box--cox transformation. This mapping helps to smooth the data that makes the optimization process more stable.
 Results obtained with the described model are presented in the following section.
