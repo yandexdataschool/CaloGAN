@@ -1,4 +1,4 @@
-\begin{thebibliography}{12}
+\begin{thebibliography}{13}
 
 \bibitem{bozzi2014}
 C.~Bozzi, Tech. rep. (2014)
@@ -17,6 +17,9 @@ C.~ATLAS, S.~Yamamoto, M.~Shapiro, J.~Virzi, M.~Werner, M.~Venturi,
 \bibitem{paganini2017calogan}
 M.~Paganini, L.~de~Oliveira, B.~Nachman, arXiv preprint arXiv:1705.02355
   (2017)
+
+\bibitem{Alves:2008zz}
+A.A. Alves~Jr. et~al. (LHCb collaboration), JINST \textbf{3}, S08005 (2008)
 
 \bibitem{goodfellow2014generative}
 I.~Goodfellow, J.~Pouget-Abadie, M.~Mirza, B.~Xu, D.~Warde-Farley, S.~Ozair,
