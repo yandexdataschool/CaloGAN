@@ -1,7 +1,6 @@
 \subsection{Background: from GAN to conditional WGAN}
 
-Generative Adversarial Networks (GANs) were originally presented by I.~Goodfellow~\etal in 2014 \cite{goodfellow2014generative} and quickly became a state-of-the-art technique in areas such as image generation \cite{radford2015unsupervised} with huge number of extensions \todo{\cite{1,2,3,4}}.
-
+Generative Adversarial Networks (GANs) were originally presented by I.~Goodfellow~\etal in 2014 \cite{goodfellow2014generative} and quickly became a state-of-the-art technique in areas such as image generation \cite{radford2015unsupervised} with huge number of extensions \cite{mirzaO14,arjovsky2017wasserstein,odena17a,UlyanovVL18}.
 
 In the GAN framework the aim is to learn a mapping $G$, usually called \textit{generator}, to warp an easy-to-draw distribution $p(\vz)$ (e.g. $p(\vz) = \mathcal{N}(0, I)$) into a target distribution $\pdata(\vx)$ to facilitate sampling from $\pdata(\vx)$. When $G$ is learned $G \equiv G^*$, sampling from the target distribution $\pdata(\vx)$ is done by first drawing a sample from the distribution $p(\vz)$ and then feeding the sample into the generator: $G^*(\vz) \sim \pdata$, where $\vz \sim p(\vz)$. For such sampling procedure, the time needed to draw a sample from $\pdata(\vx)$ is approximately equal to the time needed to evaluate the function $G$ in a point.  
 

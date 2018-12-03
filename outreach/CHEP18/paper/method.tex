@@ -25,6 +25,8 @@ Due to the nature of WGAN loss, conditioning on the continuous value is a non-tr
 Matrices from our dataset are pretty sparse because almost all information is located in central cells (see~\cref{fig:real-imgs}). To make optimization process easier we apply a box--cox transformation. This mapping helps to smooth the data that makes the optimization process more stable.
 Results obtained with the described model are presented in the following section.
 
+PyTorch \cite{pytorch} library was used to carry out model training and experiments.
+
 \begin{figure}
 \begin{center}
 \includegraphics[width=0.5\textwidth]{figures/mean_cluster.pdf}
