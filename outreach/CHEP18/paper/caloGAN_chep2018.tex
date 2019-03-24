@@ -4,7 +4,7 @@
 \usepackage[varg]{txfonts}
 \usepackage{subcaption}
 \usepackage{appendix}
-\usepackage{cleveref}
+\usepackage[capitalise]{cleveref}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{float}
@@ -45,20 +45,19 @@
 \begin{document}
 
 \title{Generative Models for Fast Calorimeter Simulation: the LHCb case}
-\subtitle{LHCb case}
 
 \author{
  \firstname{Viktoria} \lastname{Chekalina} \inst{1,2}
 \and
-    \firstname{Elena} \lastname{Orlova} \inst{3}\fnsep\thanks{\email{egorlova68@gmail.com}}
+    \firstname{Elena} \lastname{Orlova} \inst{3}
 \and
-    \firstname{Fedor} \lastname{Ratnikov} \inst{1,2}
+    \firstname{Fedor} \lastname{Ratnikov} \inst{1,2}\fnsep\thanks{\email{fedor.ratnikov@cern.ch}}
 \and
      \firstname{Dmitry} \lastname{Ulyanov} \inst{3}
 \and
      \firstname{Andrey} \lastname{Ustyuzhanin} \inst{1,2}
 \and
-     \firstname{Egor} \lastname{Zakharov} \inst{3}\fnsep\thanks{\email{eo.zakharov@gmail.com}}
+     \firstname{Egor} \lastname{Zakharov} \inst{3}
 }
 
 \institute{
@@ -69,7 +68,7 @@ Yandex School of Data Analysis, Moscow, Russia
 Skolkovo Institute of Science and Technology, Moscow, Russia
 }
         
-\abstract{Simulation is one of the key components in high energy physics. Historically it relies on the Monte Carlo methods which require a tremendous amount of computation resources. These methods may have difficulties with the expected High Luminosity Large Hadron Collider (HL-LHC) needs, so the experiments are in urgent need of new fast simulation techniques. We introduce a new Deep Learning framework based on Generative Adversarial Networks which can be faster than traditional simulation methods by 5 orders of magnitude with reasonable simulation accuracy. This approach will allow physicists to produce sufficient amount of simulated data needed by the next HL-LHC experiments using limited computing resources.}
+\abstract{Simulation is one of the key components in high energy physics. Historically it relies on the Monte Carlo methods which require a tremendous amount of computation resources. These methods may have difficulties with the expected High Luminosity Large Hadron Collider (HL-LHC) needs, so the experiments are in urgent need of new fast simulation techniques. We introduce a new Deep Learning framework based on Generative Adversarial Networks which can be faster than traditional simulation methods by 5 orders of magnitude with reasonable simulation accuracy. This approach will allow physicists to produce a sufficient amount of simulated data needed by the next HL-LHC experiments using limited computing resources.}
 
 
 \maketitle
