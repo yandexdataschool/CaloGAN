@@ -67,8 +67,10 @@ int main(int argc,char** argv)
   double spotAngleSize = 0.175;  // 10 degree
   double eMin = 1.*CLHEP::GeV;
   double eMax = 100.*CLHEP::GeV;
+  int eDependency = -1;
   int nEvents = 100;
   int iCase = 0;
+  
   string fileName = string("caloGAN_")+string(G4UIcommand::ConvertToString (G4int(seed)));
 
   int iArg = 1;
@@ -94,6 +96,9 @@ int main(int argc,char** argv)
     else if (cmd == "-eminmax") {
       eMin = G4UIcommand::ConvertToDouble(argv[iArg++])*CLHEP::GeV;
       eMax = G4UIcommand::ConvertToDouble(argv[iArg++])*CLHEP::GeV;
+    }
+    else if (cmd == "-edep") {
+      eDependency = G4UIcommand::ConvertToInt(argv[iArg++]);
     }
     else if (cmd == "-case") {
       iCase = G4UIcommand::ConvertToInt(argv[iArg++]);
@@ -219,7 +224,14 @@ int main(int argc,char** argv)
       double E = 0;
       while (1) {
 	E = G4RandFlat::shoot(eMin, eMax);
-	double w = eMin/E; // 1/E dependency
+	if (eDependency == 0) break;
+	double w = 0;
+	if (eDependency < 0) { 
+	  w = pow (eMin/E, -eDependency); // 1/E^n dependency
+	}
+	if (eDependency > 0) {
+	  w = pow (E/eMax, eDependency); // E^n dependency
+	}
 	if (G4RandFlat::shoot(0., 1.) < w) break;
       }
 
