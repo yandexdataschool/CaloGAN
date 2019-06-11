@@ -1,0 +1,92 @@
+\documentclass{webofc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[varg]{txfonts}
+\usepackage{subcaption}
+\usepackage{appendix}
+\usepackage[capitalise]{cleveref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{bm}
+\usepackage{xcolor}
+
+% \newcommand{\onedot}{\futurelet\@let@token\@onedot}
+
+\newcommand{\onedot}{.\\}
+
+\newcommand{\eg}{\emph{e.g}\onedot} \newcommand{\Eg}{\emph{E.g}\onedot}
+\newcommand{\ie}{\emph{i.e}\onedot} \newcommand{\Ie}{\emph{I.e}\onedot}
+\newcommand{\cf}{\emph{c.f}\onedot} \newcommand{\Cf}{\emph{C.f}\onedot}
+\newcommand{\etc}{\emph{etc}\onedot} \newcommand{\vs}{\emph{vs}\onedot}
+\newcommand{\wrt}{w.r.t\onedot} \def\dof{d.o.f\onedot}
+\newcommand{\etal}{\emph{et al}\onedot}
+
+
+\newcommand{\vx}{\ensuremath{\mathbf{x}}}
+\newcommand{\vz}{\ensuremath{\mathbf{z}}}
+\newcommand{\vy}{\ensuremath{\mathbf{y}}}
+
+\newcommand{\f}{f}
+
+\newcommand{\dsep}{\ensuremath{\;\|\;}}
+
+\newcommand{\pdata}{\ensuremath{p_{\text{data}}}}
+% \newcommand{\pfake}{\ensuremath{p_{\text{fake}}}}
+\newcommand{\pfake}{\ensuremath{ p_{G} }}
+
+\newcommand{\todo}[1]{{\color{blue}TODO: #1}}
+
+\newcommand{\E}{\ensuremath{\mathbb{E}}}
+
+\newcommand{\geant}{\texttt{Geant4} }
+
+
+\begin{document}
+
+\title{Generative Models for Fast Calorimeter Simulation: the LHCb case}
+
+\author{
+ \firstname{Viktoria} \lastname{Chekalina} \inst{1,2}
+\and
+    \firstname{Elena} \lastname{Orlova} \inst{3}
+\and
+    \firstname{Fedor} \lastname{Ratnikov} \inst{1,2}\fnsep\thanks{\email{fedor.ratnikov@cern.ch}}
+\and
+     \firstname{Dmitry} \lastname{Ulyanov} \inst{3}
+\and
+     \firstname{Andrey} \lastname{Ustyuzhanin} \inst{1,2}
+\and
+     \firstname{Egor} \lastname{Zakharov} \inst{3}
+}
+
+\institute{
+NRU Higher School of Economics, Moscow, Russia
+\and
+Yandex School of Data Analysis, Moscow, Russia  
+\and
+Skolkovo Institute of Science and Technology, Moscow, Russia
+}
+        
+\abstract{Simulation is one of the key components in high energy physics. Historically it relies on the Monte Carlo methods which require a tremendous amount of computation resources. These methods may have difficulties with the expected High Luminosity Large Hadron Collider (HL-LHC) needs, so the experiments are in urgent need of new fast simulation techniques. We introduce a new Deep Learning framework based on Generative Adversarial Networks which can be faster than traditional simulation methods by 5 orders of magnitude with reasonable simulation accuracy. This approach will allow physicists to produce a sufficient amount of simulated data needed by the next HL-LHC experiments using limited computing resources.}
+
+
+\maketitle
+
+
+\input{intro}
+\input{related}
+\input{background}
+\input{data}
+\input{method}
+\input{experiments}
+\input{conclusion}
+
+
+\bibliography{caloGAN_chep2018}
+
+
+%\appendix
+%\input{appendix.tex}
+
+\end{document}
