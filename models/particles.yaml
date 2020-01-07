@@ -1,4 +1,0 @@
-# put the paths to actual data here!
-positron: 'data/eplus.hdf5'
-# pion: 'data/piplus.hdf5'
-# gamma: 'data/gamma.hdf5'

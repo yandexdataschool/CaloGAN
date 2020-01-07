@@ -48,8 +48,26 @@
 
 #include "time.h"
 
+#include "CLHEP/Random/Random.h"
+#include "CLHEP/Random/NonRandomEngine.h"
+ 
+
 using namespace std;
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+std::pair<double,double> shootGauss ( CLHEP::HepRandomEngine* anEngine )
+{
+  double r;
+  double v1,v2;
+
+  do {
+    v1 = 2.0 * anEngine->flat() - 1.0;
+    v2 = 2.0 * anEngine->flat() - 1.0;
+    r = v1*v1 + v2*v2;
+  } while ( r > 1.0 );
+
+  double fac = std::sqrt( -2.0*std::log(r)/r);
+  return std::pair<double,double> (v1*fac, v2*fac);
+}
 
 
 //int main(int argc,char** argv)
@@ -67,10 +85,9 @@ int main(int argc,char** argv)
   double spotAngleSize = 0.175;  // 10 degree
   double eMin = 1.*CLHEP::GeV;
   double eMax = 100.*CLHEP::GeV;
-  int eDependency = -1;
   int nEvents = 100;
+  int nBatch = 1;
   int iCase = 0;
-  
   string fileName = string("caloGAN_")+string(G4UIcommand::ConvertToString (G4int(seed)));
 
   int iArg = 1;
@@ -97,14 +114,14 @@ int main(int argc,char** argv)
       eMin = G4UIcommand::ConvertToDouble(argv[iArg++])*CLHEP::GeV;
       eMax = G4UIcommand::ConvertToDouble(argv[iArg++])*CLHEP::GeV;
     }
-    else if (cmd == "-edep") {
-      eDependency = G4UIcommand::ConvertToInt(argv[iArg++]);
-    }
     else if (cmd == "-case") {
       iCase = G4UIcommand::ConvertToInt(argv[iArg++]);
     }
     else if (cmd == "-nev") {
       nEvents = G4UIcommand::ConvertToInt(argv[iArg++]);
+    }
+    else if (cmd == "-nbatch") {
+      nBatch = G4UIcommand::ConvertToInt(argv[iArg++]);
     }
     else if (cmd == "-fName") {
       fileName = string(argv[iArg++]);
@@ -166,14 +183,21 @@ int main(int argc,char** argv)
     eMax = eMin;
     fileName = string ("caloGAN_v3_case5");
   }
+  else if (iCase == 6) {
+    spotCenterX = 0.;
+    spotCenterY = 0.;
+    spotSize = 0;
+    spotAngleX = 0.08;
+    spotAngleY = 0.08;
+    spotAngleSize = 0;
+    eMin = 10.0*CLHEP::GeV;
+    eMax = eMin;
+    fileName = string ("caloGAN_v3_case6");
+  }
 
   setenv("GAN_FNAME",fileName.c_str(),1);  // let RunAction to set filename properly
 
   
-  // Choose the Random engine
-  //
-  G4Random::setTheEngine(new CLHEP::RanecuEngine);
-
   CLHEP::HepRandom::setTheSeed(seed);
   
   // Construct the default run manager
@@ -199,20 +223,20 @@ int main(int argc,char** argv)
    
   G4ParticleTable* ptable = G4ParticleTable::GetParticleTable();
    
-  //int partPDG = 11; // electron
   G4ParticleDefinition* g4pd = ptable->FindParticle( partPDG );
 
   cout << "Job parameters:" << endl
        << "spot position X Y size: " << spotCenterX << ' ' << spotCenterY << ' ' << spotSize << endl
        << "angle direction and spread: " << spotAngleX << ' ' << spotAngleY << ' ' << spotAngleSize << endl
        << "energy min max: " << eMin << ' ' << eMax << endl
-       << "events: " << nEvents << "   file: " << fileName << ".root" << endl;
+       << "events: " << nEvents << "  " << nBatch << " events in batch" << endl
+       << "file: " << fileName << ".root" << endl;
   
 
 
+  CLHEP::HepRandomEngine* engine =  CLHEP::HepRandom::getTheEngine();
   for ( int iev=0; iev<nEvents; ++iev )
     {
-      
       
       // NOTE: there maybe several ctor's for prim.vtx
       //       I think you can also construct from a a CLHP vector, etc.
@@ -223,53 +247,57 @@ int main(int argc,char** argv)
 
       double E = 0;
       while (1) {
-	E = G4RandFlat::shoot(eMin, eMax);
-	if (eDependency == 0) break;
-	double w = 0;
-	if (eDependency < 0) { 
-	  w = pow (eMin/E, -eDependency); // 1/E^n dependency
-	}
-	if (eDependency > 0) {
-	  w = pow (E/eMax, eDependency); // E^n dependency
-	}
-	if (G4RandFlat::shoot(0., 1.) < w) break;
+	E = eMin + engine->flat()*(eMax - eMin);
+	double w = eMin/E; // 1/E dependency
+	if (engine->flat() < w) break;
       }
-
-      double dxdz = G4RandGauss::shoot (spotAngleX, spotAngleSize);
-      double dydz = G4RandGauss::shoot (spotAngleY, spotAngleSize);
+      std::pair<double,double> gauss2 = shootGauss (engine);
+      double dxdz = spotAngleX + gauss2.first*spotAngleSize;
+      double dydz = spotAngleY + gauss2.second*spotAngleSize;
       double pz = E / sqrt (1. + dxdz*dxdz + dydz*dydz);
 
-      double x0 = G4RandFlat::shoot(spotCenterX-spotSize, spotCenterX+spotSize); 
-      double y0 = G4RandFlat::shoot(spotCenterY-spotSize, spotCenterY+spotSize); 
+      double x0 = spotCenterX-spotSize + engine->flat()*2*spotSize;
+      double y0 = spotCenterY-spotSize + engine->flat()*2*spotSize;
       x0 += -dxdz*15.*CLHEP::cm;
       y0 += -dydz*15.*CLHEP::cm;
-      
-      G4PrimaryParticle* g4part = new G4PrimaryParticle( g4pd, pz*dxdz, pz*dydz, pz, E );
-      
-      G4PrimaryVertex* g4vtx = new G4PrimaryVertex( x0, y0, -19.8*CLHEP::cm, 0. ); // xyzt
-      g4vtx->SetPrimary(g4part);
-      G4Event* g4evt = new G4Event( iev );
-      g4evt->AddPrimaryVertex(g4vtx);
 
-      if (!(iev%1000)) cout<<iev<<" generated parameters: "<<" E="<<E<<" x:y="<<x0<<':'<<y0<<" dx:y="<<dxdz<<':'<<dydz<<endl;
+      for (int ibatch = 0; ibatch < nBatch; ++ibatch) {
+	
+	G4PrimaryParticle* g4part = new G4PrimaryParticle( g4pd, pz*dxdz, pz*dydz, pz, E );
+	
+	G4PrimaryVertex* g4vtx = new G4PrimaryVertex( x0, y0, -19.8*CLHEP::cm, 0. ); // xyzt
+	g4vtx->SetPrimary(g4part);
+	G4Event* g4evt = new G4Event( iev );
+	g4evt->AddPrimaryVertex(g4vtx);
+	
+	if (!(iev%100) && !ibatch) cout<<iev<<" generated parameters: "<<" E="<<E<<" x:y="<<x0<<':'<<y0<<" dx:y="<<dxdz<<':'<<dydz<<endl;
       
-      // NOTE: you can generate as mant vertices as you wish, 
-      //       with many particles attached to each vertex
-      
-      // now just process the event through your detector
-      //
-      //
-      G4EventManager::GetEventManager()->ProcessOneEvent( g4evt );
-      
-      // NOTE: cant't remember what this one if for...
-      //       I think this is somehow related to collecting stuff from Sensitive Detector's
-      //       all in all, I found it in my code and have decided that "it wont hurt"
-      //
-      runManager->AnalyzeEvent( g4evt );
-
-      delete g4evt;
-      g4evt = 0;
-   
+	// NOTE: you can generate as mant vertices as you wish, 
+	//       with many particles attached to each vertex
+	
+	// now just process the event through your detector
+	//
+	//
+	
+	//      G4Random::setTheEngine(fixedEngine);
+	//      cout << "FixedEngine-> flat: " << G4RandFlat::shoot(-1, 1) << " Gauss: " << G4RandGauss::shoot (0, 1) << endl;
+	
+	
+	G4EventManager::GetEventManager()->ProcessOneEvent( g4evt );
+	
+	// cout << "G4EventManager::GetEventManager()->ProcessOneEvent( g4evt );" << endl;
+	
+	// NOTE: cant't remember what this one if for...
+	//       I think this is somehow related to collecting stuff from Sensitive Detector's
+	//       all in all, I found it in my code and have decided that "it wont hurt"
+	//
+	runManager->AnalyzeEvent( g4evt );
+	
+	// cout << "runManager->AnalyzeEvent( g4evt );" << endl;
+	
+	delete g4evt;
+	g4evt = 0;
+      }
    }
   runManager->RunTermination();
 

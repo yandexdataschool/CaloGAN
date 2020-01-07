@@ -8,14 +8,14 @@
 #include <vector>
 #include <map>
 
-#include "constants.hh"
+const int ecalGranularity = 5*6;
 
 class RunData : public G4Run {
 public:
   RunData();
   virtual ~RunData();
 
-  void AddSciDe(G4int ix, G4int iy, G4int iz, G4double de);
+  void AddSciDe(G4int ix, G4int iy, G4double de);
   void AddAbsDe(G4double de);
   void SetParticle (G4int pdg, const G4ThreeVector& point, const G4ThreeVector& momentum);
   void FillPerEvent();
@@ -31,8 +31,8 @@ private:
   std::map< std::string, std::pair<int, int> > ntupleId;
 };
 
-inline void RunData::AddSciDe(G4int ix, G4int iy, G4int iz, G4double de) {
-  fEnergyDeposit[ (ix * calGranularityY + iy) * nLogLayers + iz] += de;
+inline void RunData::AddSciDe(G4int ix, G4int iy, G4double de) {
+  fEnergyDeposit[ix + iy * ecalGranularity] += de;
   fTotalEnergySci += de;
 }
 

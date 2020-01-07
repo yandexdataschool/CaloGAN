@@ -38,14 +38,14 @@
 #include "G4SystemOfUnits.hh"
 #include <sstream>
 
-#include "constants.hh"
-
+using namespace std;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 RunAction::RunAction()
  : G4UserRunAction()
-{ 
+{
+  cout<<"RunAction::RunAction()-> ..."<<endl;
   // set printing event number per each event
   G4RunManager::GetRunManager()->SetPrintProgress(1);     
 
@@ -79,16 +79,14 @@ RunAction::RunAction()
 
   analysisManager->CreateNtuple(fname.c_str(), "Edep and TrackL");
 
-  for (int ix = 0; ix < calGranularityX; ++ix) {
-    for (int iy = 0; iy < calGranularityY; ++iy) {
-      for (int iz = 0; iz < nLogLayers; ++iz) {
-	std::stringstream out;
-	out << "cell_" << iz+nLogLayers*iy+nLogLayers*ix << "_" << ix << "_" << iy << "_"  << iz;
-	//	analysisManager->CreateNtupleDColumn(out.str());
-      }
-    }
-  }
+  int total_bins = 5*5*6*6 + 1;  // 3 overflow bins for the three calo layers
 
+  for (int i = 0; i < total_bins; ++i) {
+
+    std::stringstream out;
+    out << i;
+    analysisManager->CreateNtupleDColumn("cell_" + out.str());
+  }
   analysisManager->CreateNtupleDColumn("TotalEnergy");
   
   analysisManager->CreateNtupleDColumn("Eabs");
@@ -105,6 +103,10 @@ RunAction::RunAction()
 
 RunAction::~RunAction()
 {
+  cout<<"RunAction::~RunAction()"<<endl;
+  //  auto analysisManager = G4AnalysisManager::Instance();
+  //analysisManager->Write();
+  //analysisManager->CloseFile();
   delete G4AnalysisManager::Instance();  
 }
 
@@ -131,7 +133,7 @@ void RunAction::BeginOfRunAction(const G4Run* run)
   //
 
   char const* val = getenv("GAN_FNAME"); 
-  std::string fname = (val == NULL ? std::string("plz_work_kthxbai") : std::string(val));
+  std::string fname = (val == NULL ? std::string("GAN_FNAME") : std::string(val));
 
 
   G4String fileName = fname.c_str();
@@ -177,6 +179,7 @@ void RunAction::EndOfRunAction(const G4Run* /*aRun*/)
 
   // save histograms & ntuple
   //
+  cout<<"RunAction::EndOfRunAction-> writing ntuples..."<<endl;
   analysisManager->Write();
   analysisManager->CloseFile();
 

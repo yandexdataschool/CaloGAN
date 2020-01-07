@@ -20,6 +20,7 @@ public:
   virtual ~SteppingAction();
 
   virtual void UserSteppingAction(const G4Step* step);
+  std::pair<int,int> WhichXYbin(double xpos, double ypos);
 
 private:
   const DetectorConstruction* fDetConstruction;

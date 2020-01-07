@@ -1,4 +1,3 @@
-
 #include "RunData.hh"
 #include "Analysis.hh"
 
@@ -10,13 +9,14 @@ using namespace std;
 
 RunData::RunData() :
   G4Run(),
-  fEnergyDeposit (calGranularityX*calGranularityY*nLogLayers),
+  fEnergyDeposit (ecalGranularity*ecalGranularity),
   fParticlePoint (3),
   fParticleMomentum (3)
 {
   Reset ();
   // Set Ntuple
   G4AnalysisManager* man = G4AnalysisManager::Instance();
+  cout << "RunData::RunData -> creating ntuple" << endl;
   int ecalNT = man->CreateNtuple ("ecalNT", "ECAL Values");
   ntupleId ["EnergyDeposit"] = pair<int, int> (ecalNT, man->CreateNtupleDColumn (ecalNT, "EnergyDeposit", fEnergyDeposit));
   ntupleId ["TotalEnergySci"] = pair<int, int> (ecalNT, man->CreateNtupleDColumn (ecalNT, "TotalEnergySci"));

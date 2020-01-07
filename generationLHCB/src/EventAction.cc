@@ -9,8 +9,6 @@
 #include "Randomize.hh"
 #include <iostream>
 
-#include "constants.hh"
-
 using namespace std;
 
 EventAction::EventAction()
@@ -22,7 +20,7 @@ EventAction::~EventAction()
 
 
 void EventAction::BeginOfEventAction(const G4Event* /*event*/)
-{  
+{
 }
 
 void EventAction::EndOfEventAction(const G4Event* event)
