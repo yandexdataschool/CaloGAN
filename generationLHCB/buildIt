@@ -1,2 +1,17 @@
-cmake -DCMAKE_CXX_COMPILER=g++ .
-make
+#!/bin/bash
+rm -r build
+mkdir build
+cd build
+
+export CPP=`which gcc`
+export CXX=`which g++`
+if cmake ../; then
+   if make; then
+      	echo SUCCESS!
+   else 
+   	echo make FAILED
+   fi
+else
+   echo cmake FAILED
+fi
+

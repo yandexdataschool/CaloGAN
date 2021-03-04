@@ -8,8 +8,8 @@ rootfile = sys.argv[1]
 npzfile = rootfile+'.npz'
 if len(sys.argv) > 2:
     npzfile = sys.argv[2]
-print 'Processing ROOT file', rootfile
-print 'Output npz file', npzfile
+print ('Processing ROOT file', rootfile)
+print ('Output npz file', npzfile)
 
 data = root2array (rootfile, 'ecalNT')
 
@@ -37,12 +37,12 @@ ParticlePoint = np.array (pp)
 ParticleMomentum = np.array (pm)
 ParticlePDG = np.array (pdg)
 
-print EnergyDeposit.shape
-print TotalEnergySci[0]
-print TotalEnergyAbsorb[0]
-print ParticlePoint[0]
-print ParticleMomentum[0]
-print ParticlePDG[0]
+print (EnergyDeposit.shape)
+print (TotalEnergySci[0])
+print (TotalEnergyAbsorb[0])
+print (ParticlePoint[0])
+print (ParticleMomentum[0])
+print (ParticlePDG[0])
 
 
 
