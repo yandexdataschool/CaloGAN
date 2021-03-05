@@ -49,6 +49,8 @@
 #include "time.h"
 #include <unistd.h>
 
+#include "constants.hh"
+
 using namespace std;
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -71,8 +73,9 @@ int main(int argc,char** argv)
   int eDependency = -1;
   int nEvents = 100;
   int iCase = 0;
-  
   string fileName = string("caloGAN_")+string(G4UIcommand::ConvertToString (G4int(seed)));
+  int nBatch = 1;
+  int nLog = 1000;
 
   int iArg = 1;
   while (iArg < argc) {
@@ -110,7 +113,13 @@ int main(int argc,char** argv)
     else if (cmd == "-fName") {
       fileName = string(argv[iArg++]);
     }
-  }
+    else if (cmd == "-batch") {
+      nBatch = G4UIcommand::ConvertToInt(argv[iArg++]);
+    }
+    else if (cmd == "-nlog") {
+      nLog = G4UIcommand::ConvertToInt(argv[iArg++]);
+    }
+ }
 
   if (iCase == 1) {
     spotCenterX = 0;
@@ -203,12 +212,28 @@ int main(int argc,char** argv)
   //int partPDG = 11; // electron
   G4ParticleDefinition* g4pd = ptable->FindParticle( partPDG );
 
+  cout << "Detector parameters: " << endl
+       << " detector dimensions: " << calorSizeX/mm << 'x' << calorSizeY/mm << 'x' << totalLength/mm << "mm^3" << endl
+       << " granularity: " << calGranularityX << 'x' << calGranularityY << 'x' << nLogLayers << endl
+       << " cell size: " << cellSize/mm << 'x' << cellSize/mm << "mm^2"
+       << endl;
+
   cout << "Job parameters:" << endl
-       << "spot position X Y size: " << spotCenterX << ' ' << spotCenterY << ' ' << spotSize << endl
-       << "angle direction and spread: " << spotAngleX << ' ' << spotAngleY << ' ' << spotAngleSize << endl
-       << "energy min max: " << eMin << ' ' << eMax << endl
-       << "events: " << nEvents << "   file: " << fileName << ".root" << endl;
+       << " spot position X Y size: " << spotCenterX << ' ' << spotCenterY << ' ' << spotSize << endl
+       << " angle direction and spread: " << spotAngleX << ' ' << spotAngleY << ' ' << spotAngleSize << endl
+       << " energy min max: " << eMin << ' ' << eMax << endl
+       << " events: " << nEvents << " by batches of " << nBatch << " events" << endl
+       << "   file: " << fileName << ".root"
+       << endl;
   
+  int iBatch = nBatch;
+  
+  double E = 0;
+  double pz = 0;
+  double dxdz = 0;
+  double dydz = 0;
+  double x0 = 0;
+  double y0 = 0;
 
 
   for ( int iev=0; iev<nEvents; ++iev )
@@ -222,37 +247,40 @@ int main(int argc,char** argv)
       //
 
 
-      double E = 0;
-      while (1) {
-	E = G4RandFlat::shoot(eMin, eMax);
-	if (eDependency == 0) break;
-	double w = 0;
-	if (eDependency < 0) { 
-	  w = pow (eMin/E, -eDependency); // 1/E^n dependency
+      if (iBatch++ >= nBatch) { // generate new kinematics
+	E = 0;
+	while (1) {
+	  E = G4RandFlat::shoot(eMin, eMax);
+	  if (eDependency == 0) break;
+	  double w = 0;
+	  if (eDependency < 0) { 
+	    w = pow (eMin/E, -eDependency); // 1/E^n dependency
+	  }
+	  if (eDependency > 0) {
+	    w = pow (E/eMax, eDependency); // E^n dependency
+	  }
+	  if (G4RandFlat::shoot(0., 1.) < w) break;
 	}
-	if (eDependency > 0) {
-	  w = pow (E/eMax, eDependency); // E^n dependency
-	}
-	if (G4RandFlat::shoot(0., 1.) < w) break;
+	
+	dxdz = G4RandGauss::shoot (spotAngleX, spotAngleSize);
+	dydz = G4RandGauss::shoot (spotAngleY, spotAngleSize);
+	pz = E / sqrt (1. + dxdz*dxdz + dydz*dydz);
+	
+	x0 = G4RandFlat::shoot(spotCenterX-spotSize, spotCenterX+spotSize); 
+	y0 = G4RandFlat::shoot(spotCenterY-spotSize, spotCenterY+spotSize); 
+	x0 += -dxdz*15.*CLHEP::cm;
+	y0 += -dydz*15.*CLHEP::cm;
+	iBatch = 0;
       }
-
-      double dxdz = G4RandGauss::shoot (spotAngleX, spotAngleSize);
-      double dydz = G4RandGauss::shoot (spotAngleY, spotAngleSize);
-      double pz = E / sqrt (1. + dxdz*dxdz + dydz*dydz);
-
-      double x0 = G4RandFlat::shoot(spotCenterX-spotSize, spotCenterX+spotSize); 
-      double y0 = G4RandFlat::shoot(spotCenterY-spotSize, spotCenterY+spotSize); 
-      x0 += -dxdz*15.*CLHEP::cm;
-      y0 += -dydz*15.*CLHEP::cm;
-      
-      G4PrimaryParticle* g4part = new G4PrimaryParticle( g4pd, pz*dxdz, pz*dydz, pz, E );
+	
+	G4PrimaryParticle* g4part = new G4PrimaryParticle( g4pd, pz*dxdz, pz*dydz, pz, E );
       
       G4PrimaryVertex* g4vtx = new G4PrimaryVertex( x0, y0, -19.8*CLHEP::cm, 0. ); // xyzt
       g4vtx->SetPrimary(g4part);
       G4Event* g4evt = new G4Event( iev );
       g4evt->AddPrimaryVertex(g4vtx);
 
-      if (!(iev%1000)) cout<<iev<<" generated parameters: "<<" E="<<E<<" x:y="<<x0<<':'<<y0<<" dx:y="<<dxdz<<':'<<dydz<<endl;
+      if (!(iev%nLog)) cout<<iev<<" generated parameters: "<<" E="<<E<<" x:y="<<x0<<':'<<y0<<" dx:y="<<dxdz<<':'<<dydz<<endl;
       
       // NOTE: you can generate as mant vertices as you wish, 
       //       with many particles attached to each vertex
