@@ -64,7 +64,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     // get methods
     //
     const G4VPhysicalVolume* GetAbsorberPV() const;
-    const G4VPhysicalVolume* GetGapPV() const;
+    const G4VPhysicalVolume* GetScintillatorPV() const;
      
   private:
     // methods
@@ -78,7 +78,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
                                       // magnetic field messenger
      
     G4VPhysicalVolume*   fAbsorberPV; // the absorber physical volume
-    G4VPhysicalVolume*   fGapPV;      // the gap physical volume
+    G4VPhysicalVolume*   fScintillatorPV;      // the scintillator physical volume
     
     G4bool  fCheckOverlaps; // option to activate checking of volumes overlaps
 };
@@ -89,8 +89,8 @@ inline const G4VPhysicalVolume* DetectorConstruction::GetAbsorberPV() const {
   return fAbsorberPV; 
 }
 
-inline const G4VPhysicalVolume* DetectorConstruction::GetGapPV() const  { 
-  return fGapPV; 
+inline const G4VPhysicalVolume* DetectorConstruction::GetScintillatorPV() const  { 
+  return fScintillatorPV; 
 }
      
 

@@ -57,18 +57,18 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
    if ( volume == fDetConstruction->GetAbsorberPV() ) {
     runData->AddAbsDe (edep);
   }
-  else if ( volume == fDetConstruction->GetGapPV() ) {
+  else if ( volume == fDetConstruction->GetScintillatorPV() ) {
 
     int ix = int (floor(pos1.x()/cellSize)) + calGranularityX/2;
     int iy = int (floor(pos1.y()/cellSize)) + calGranularityY/2;
     int iz = int (floor(pos1.z()/layerThickness)) + nLayers/2;
     iz = int (iz / aggregateLayers);
 		
-    if (ix >= 0 || ix >= calGranularityX ||
-	iy > 0 || iy >= calGranularityY ||
-	iz < 0 || iz >= nLogLayers) {
+    if (ix >= 0 && ix < calGranularityX &&
+	iy >= 0 && iy < calGranularityY &&
+	iz >= 0 && iz < nLogLayers) {
       runData->AddSciDe(ix, iy, iz, edep);
-      //      cout << "enter energy: "<<ix<<':'<<iy<<':'<<iz<<" energy: "<<edep<<endl;
+      //      cout << "enter energy: "<<ix<<':'<<iy<<':'<<iz<<" energy: "<<edep<< " XYZ: " << pos1.x() << ':'<< pos1.y() << ':'<< pos1.z() << endl;
     }
   }  
 }

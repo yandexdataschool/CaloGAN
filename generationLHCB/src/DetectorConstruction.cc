@@ -1,5 +1,6 @@
 
 #include "DetectorConstruction.hh"
+#include "constants.hh"
 
 #include "G4Material.hh"
 #include "G4NistManager.hh"
@@ -32,7 +33,7 @@ G4GlobalMagFieldMessenger* DetectorConstruction::fMagFieldMessenger = 0;
 DetectorConstruction::DetectorConstruction()
  : G4VUserDetectorConstruction(),
    fAbsorberPV(0),
-   fGapPV(0),
+   fScintillatorPV(0),
    fCheckOverlaps(true)
 {
 }
@@ -93,24 +94,24 @@ void DetectorConstruction::DefineMaterials()
 G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
 {
   // Geometry parameters
-  G4double moduleSize = 121.2*mm;
-  G4int nofModules = 5;
-  G4int nofLayers = 66;
-  G4double absoThickness = 2.*mm;
-  G4double gapThickness =  4.*mm;
-  G4double calorSizeXY  = nofModules*moduleSize;
+  //  G4double moduleSize = 121.2*mm;
+  // G4int nofModules = 5;
+  // G4int nofLayers = 66;
+  // G4double absoThickness = 2.*mm;
+  // G4double gapThickness =  4.*mm;
+  // G4double calorSizeXY  = nofModules*moduleSize;
 
-  G4double layerThickness = absoThickness + gapThickness;
-  G4double calorThickness = nofLayers * layerThickness;
-  G4double worldSizeXY = 1.2 * calorSizeXY;
-  G4double worldSizeZ  = 1.2 * calorThickness; 
+  // G4double layerThickness = absoThickness + gapThickness;
+  // G4double calorThickness = nofLayers * layerThickness;
+  // G4double worldSizeXY = 1.2 * calorSizeXY;
+  // G4double worldSizeZ  = 1.2 * calorThickness; 
   
   // Get materials
   G4Material* defaultMaterial = G4Material::GetMaterial("Galactic");
   G4Material* absorberMaterial = G4Material::GetMaterial("G4_Pb");
-  G4Material* gapMaterial = G4Material::GetMaterial("Scintillator");
+  G4Material* scintillatorMaterial = G4Material::GetMaterial("Scintillator");
   
-  if ( ! defaultMaterial || ! absorberMaterial || ! gapMaterial ) {
+  if ( ! defaultMaterial || ! absorberMaterial || ! scintillatorMaterial ) {
     G4ExceptionDescription msg;
     msg << "Cannot retrieve materials already defined."; 
     G4Exception("DetectorConstruction::DefineVolumes()",
@@ -120,9 +121,10 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
   //     
   // World
   //
+  const double worldScale = 1.2;
   G4VSolid* worldS 
     = new G4Box("World",           // its name
-                 worldSizeXY/2, worldSizeXY/2, worldSizeZ/2); // its size
+                 calorSizeX*worldScale/2, calorSizeY*worldScale/2, totalLength*worldScale/2); // its size
                          
   G4LogicalVolume* worldLV
     = new G4LogicalVolume(
@@ -146,7 +148,7 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
   //  
   G4VSolid* calorimeterS
     = new G4Box("Calorimeter",     // its name
-                 calorSizeXY/2, calorSizeXY/2, calorThickness/2); // its size
+                 calorSizeX/2, calorSizeY/2, totalLength/2); // its size
                          
   G4LogicalVolume* calorLV
     = new G4LogicalVolume(
@@ -169,7 +171,7 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
   //
   G4VSolid* layerS 
     = new G4Box("Layer",           // its name
-                 calorSizeXY/2, calorSizeXY/2, layerThickness/2); // its size
+                 calorSizeX/2, calorSizeY/2, layerThickness/2); // its size
                          
   G4LogicalVolume* layerLV
     = new G4LogicalVolume(
@@ -182,52 +184,52 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
                  layerLV,          // its logical volume
                  calorLV,          // its mother
                  kZAxis,           // axis of replication
-                 nofLayers,        // number of replica
+                 nLayers,        // number of replica
                  layerThickness);  // witdth of replica
   
   //                               
   // Absorber
   //
   G4VSolid* absorberS 
-    = new G4Box("Abso",            // its name
-                 calorSizeXY/2, calorSizeXY/2, absoThickness/2); // its size
+    = new G4Box("Absorber",            // its name
+                 calorSizeX/2, calorSizeY/2, absorberThickness/2); // its size
                          
   G4LogicalVolume* absorberLV
     = new G4LogicalVolume(
                  absorberS,        // its solid
                  absorberMaterial, // its material
-                 "Abso");          // its name
+                 "Absorber");          // its name
                                    
   fAbsorberPV
     = new G4PVPlacement(
                  0,                // no rotation
-                 G4ThreeVector(0., 0., -gapThickness/2), // its position
+                 G4ThreeVector(0., 0., -scintillatorThickness/2), // its position
                  absorberLV,       // its logical volume                         
-                 "Abso",           // its name
+                 "Absorber",           // its name
                  layerLV,          // its mother  volume
                  false,            // no boolean operation
                  0,                // copy number
                  fCheckOverlaps);  // checking overlaps 
 
   //                               
-  // Gap
+  // Scintillator
   //
-  G4VSolid* gapS 
-    = new G4Box("Gap",             // its name
-                 calorSizeXY/2, calorSizeXY/2, gapThickness/2); // its size
+  G4VSolid* scintillatorS 
+    = new G4Box("Scintillator",             // its name
+                 calorSizeX/2, calorSizeY/2, scintillatorThickness/2); // its size
                          
-  G4LogicalVolume* gapLV
+  G4LogicalVolume* scintillatorLV
     = new G4LogicalVolume(
-                 gapS,             // its solid
-                 gapMaterial,      // its material
-                 "Gap");           // its name
+                 scintillatorS,             // its solid
+                 scintillatorMaterial,      // its material
+                 "Scintillator");           // its name
                                    
-  fGapPV
+  fScintillatorPV
     = new G4PVPlacement(
                  0,                // no rotation
-                 G4ThreeVector(0., 0., absoThickness/2), // its position
-                 gapLV,            // its logical volume                         
-                 "Gap",            // its name
+                 G4ThreeVector(0., 0., absorberThickness/2), // its position
+                 scintillatorLV,            // its logical volume                         
+                 "Scintillator",            // its name
                  layerLV,          // its mother  volume
                  false,            // no boolean operation
                  0,                // copy number
@@ -239,10 +241,10 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
   G4cout
     << G4endl 
     << "------------------------------------------------------------" << G4endl
-    << "---> The calorimeter is " << nofLayers << " layers of: [ "
-    << absoThickness/mm << "mm of " << absorberMaterial->GetName() 
+    << "---> The calorimeter is " << nLayers << " layers of: [ "
+    << absorberThickness/mm << "mm of " << absorberMaterial->GetName() 
     << " + "
-    << gapThickness/mm << "mm of " << gapMaterial->GetName() << " ] " << G4endl
+    << scintillatorThickness/mm << "mm of " << scintillatorMaterial->GetName() << " ] " << G4endl
     << "------------------------------------------------------------" << G4endl;
   
   //                                        
