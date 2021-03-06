@@ -76,6 +76,7 @@ int main(int argc,char** argv)
   string fileName = string("caloGAN_")+string(G4UIcommand::ConvertToString (G4int(seed)));
   int nBatch = 1;
   int nLog = 1000;
+  double zOffset = 15*CLHEP::cm;
 
   int iArg = 1;
   while (iArg < argc) {
@@ -118,6 +119,9 @@ int main(int argc,char** argv)
     }
     else if (cmd == "-nlog") {
       nLog = G4UIcommand::ConvertToInt(argv[iArg++]);
+    }
+    else if (cmd == "-zoffset") {
+      zOffset = G4UIcommand::ConvertToDouble(argv[iArg++]);
     }
  }
 
@@ -268,14 +272,14 @@ int main(int argc,char** argv)
 	
 	x0 = G4RandFlat::shoot(spotCenterX-spotSize, spotCenterX+spotSize); 
 	y0 = G4RandFlat::shoot(spotCenterY-spotSize, spotCenterY+spotSize); 
-	x0 += -dxdz*15.*CLHEP::cm;
-	y0 += -dydz*15.*CLHEP::cm;
+	x0 += -dxdz*zOffset;
+	y0 += -dydz*zOffset;
 	iBatch = 0;
       }
 	
 	G4PrimaryParticle* g4part = new G4PrimaryParticle( g4pd, pz*dxdz, pz*dydz, pz, E );
       
-      G4PrimaryVertex* g4vtx = new G4PrimaryVertex( x0, y0, -19.8*CLHEP::cm, 0. ); // xyzt
+      G4PrimaryVertex* g4vtx = new G4PrimaryVertex( x0, y0, -0.5*totalLength, 0. ); // xyzt
       g4vtx->SetPrimary(g4part);
       G4Event* g4evt = new G4Event( iev );
       g4evt->AddPrimaryVertex(g4vtx);

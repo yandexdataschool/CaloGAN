@@ -4,14 +4,13 @@ import sys
 import numpy as np
 from root_numpy import root2array
 
-rootfile = sys.argv[1]
-npzfile = rootfile+'.npz'
-if len(sys.argv) > 2:
-    npzfile = sys.argv[2]
+rootfiles = sys.argv[1:]
+npzfile = '.npz'
+for rootfile in rootfiles:
+    npzfile = rootfile+'.'+npzfile
 print ('Processing ROOT file', rootfile)
 print ('Output npz file', npzfile)
 
-data = root2array (rootfile, 'ecalNT')
 
 #print data[0]
 
@@ -22,13 +21,16 @@ pp = []
 pm = []
 pdg = []
 
-for row in data:
-    ed.append (np.array(row[0]).reshape ((30,30,-1)))
-    tes.append (row[1])
-    tea.append (row[2])
-    pp.append (np.array(row[3]))
-    pm.append (np.array(row[4]))
-    pdg.append (row[5])
+for rootfile in rootfiles:
+    data = root2array (rootfile, 'ecalNT')
+
+    for row in data:
+        ed.append (np.array(row[0]).reshape ((30,30,-1)))
+        tes.append (row[1])
+        tea.append (row[2])
+        pp.append (np.array(row[3]))
+        pm.append (np.array(row[4]))
+        pdg.append (row[5])
 
 EnergyDeposit = np.array (ed)
 TotalEnergySci = np.array (tes)
