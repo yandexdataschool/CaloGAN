@@ -28,7 +28,7 @@
 /// \file example.cc
 /// \brief Main program of the  example
 
-#include "DetectorConstructionShashlik.hh"
+#include "DetectorConstructionSpacal.hh"
 #include "ActionInitialization.hh"
 
 #ifdef G4MULTITHREADED
@@ -52,10 +52,8 @@
 #include "constants.hh"
 
 using namespace std;
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 
-//int main(int argc,char** argv)
 int main(int argc,char** argv)
 {
   G4long seed = abs(((time(NULL) * 181) * ((getpid() - 83) * 359)) % 104729);
@@ -196,14 +194,14 @@ int main(int argc,char** argv)
 
   // Set mandatory initialization classes
   //
-  DetectorConstruction* detConstruction = new DetectorConstructionShashlik();
+  DetectorConstruction* detConstruction = new DetectorConstructionSpacal();
   runManager->SetUserInitialization(detConstruction);
 
   G4VModularPhysicsList* physicsList = new FTFP_BERT;
   runManager->SetUserInitialization(physicsList);
     
   ActionInitialization* actionInitialization
-     = new ActionInitialization(detConstruction);
+    = new ActionInitialization(detConstruction);
   runManager->SetUserInitialization(actionInitialization);
 
   runManager->Initialize();   

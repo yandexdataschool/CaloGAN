@@ -1,5 +1,5 @@
 
-#include "DetectorConstruction.hh"
+#include "DetectorConstructionShashlik.hh"
 #include "constants.hh"
 
 #include "G4Material.hh"
@@ -26,27 +26,11 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 G4ThreadLocal 
-G4GlobalMagFieldMessenger* DetectorConstruction::fMagFieldMessenger = 0; 
+G4GlobalMagFieldMessenger* DetectorConstructionShashlik::fMagFieldMessenger = 0; 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-DetectorConstruction::DetectorConstruction()
- : G4VUserDetectorConstruction(),
-   fAbsorberPV(0),
-   fScintillatorPV(0),
-   fCheckOverlaps(true)
-{
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-DetectorConstruction::~DetectorConstruction()
-{ 
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-G4VPhysicalVolume* DetectorConstruction::Construct()
+G4VPhysicalVolume* DetectorConstructionShashlik::Construct()
 {
   // Define materials 
   DefineMaterials();
@@ -57,7 +41,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void DetectorConstruction::DefineMaterials()
+void DetectorConstructionShashlik::DefineMaterials()
 { 
   // Lead material defined using NIST Manager
   G4NistManager* nistManager = G4NistManager::Instance();
@@ -91,7 +75,7 @@ void DetectorConstruction::DefineMaterials()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
+G4VPhysicalVolume* DetectorConstructionShashlik::DefineVolumes()
 {
   // Geometry parameters
   //  G4double moduleSize = 121.2*mm;
@@ -114,7 +98,7 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
   if ( ! defaultMaterial || ! absorberMaterial || ! scintillatorMaterial ) {
     G4ExceptionDescription msg;
     msg << "Cannot retrieve materials already defined."; 
-    G4Exception("DetectorConstruction::DefineVolumes()",
+    G4Exception("DetectorConstructionShashlik::DefineVolumes()",
       "MyCode0001", FatalException, msg);
   }  
    
@@ -141,7 +125,7 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
                  0,                // its mother  volume
                  false,            // no boolean operation
                  0,                // copy number
-                 fCheckOverlaps);  // checking overlaps 
+                 checkOverlaps ());  // checking overlaps 
   
   //                               
   // Calorimeter
@@ -164,7 +148,7 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
                  worldLV,          // its mother  volume
                  false,            // no boolean operation
                  0,                // copy number
-                 fCheckOverlaps);  // checking overlaps 
+                 checkOverlaps ());  // checking overlaps 
   
   //                                 
   // Layer
@@ -200,17 +184,16 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
                  absorberMaterial, // its material
                  "Absorber");          // its name
                                    
-  fAbsorberPV
-    = new G4PVPlacement(
-                 0,                // no rotation
-                 G4ThreeVector(0., 0., -scintillatorThickness/2), // its position
-                 absorberLV,       // its logical volume                         
-                 "Absorber",           // its name
-                 layerLV,          // its mother  volume
-                 false,            // no boolean operation
-                 0,                // copy number
-                 fCheckOverlaps);  // checking overlaps 
-
+  SetAbsorberPV (new G4PVPlacement(
+				   0,                // no rotation
+				   G4ThreeVector(0., 0., -scintillatorThickness/2), // its position
+				   absorberLV,       // its logical volume                         
+				   "Absorber",           // its name
+				   layerLV,          // its mother  volume
+				   false,            // no boolean operation
+				   0,                // copy number
+				   checkOverlaps ())  // checking overlaps 
+		 );
   //                               
   // Scintillator
   //
@@ -224,17 +207,16 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
                  scintillatorMaterial,      // its material
                  "Scintillator");           // its name
                                    
-  fScintillatorPV
-    = new G4PVPlacement(
-                 0,                // no rotation
-                 G4ThreeVector(0., 0., absorberThickness/2), // its position
-                 scintillatorLV,            // its logical volume                         
-                 "Scintillator",            // its name
-                 layerLV,          // its mother  volume
-                 false,            // no boolean operation
-                 0,                // copy number
-                 fCheckOverlaps);  // checking overlaps 
-  
+  SetSensitivePV (new G4PVPlacement(
+				    0,                // no rotation
+				    G4ThreeVector(0., 0., absorberThickness/2), // its position
+				    scintillatorLV,            // its logical volume                         
+				    "Scintillator",            // its name
+				    layerLV,          // its mother  volume
+				    false,            // no boolean operation
+				    0,                // copy number
+				    checkOverlaps ())  // checking overlaps 
+		  );
   //
   // print parameters
   //
@@ -264,7 +246,7 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void DetectorConstruction::ConstructSDandField()
+void DetectorConstructionShashlik::ConstructSDandField()
 { 
   // Create global magnetic field messenger.
   // Uniform magnetic field is then created automatically if

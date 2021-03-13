@@ -57,7 +57,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
    if ( volume == fDetConstruction->GetAbsorberPV() ) {
     runData->AddAbsDe (edep);
   }
-  else if ( volume == fDetConstruction->GetScintillatorPV() ) {
+  else if ( volume == fDetConstruction->GetSensitivePV() ) {
 
     int ix = int (floor(pos1.x()/cellSize)) + calGranularityX/2;
     int iy = int (floor(pos1.y()/cellSize)) + calGranularityY/2;
