@@ -251,7 +251,7 @@ int main(int argc,char** argv)
       //
 
 
-      if (iBatch++ >= nBatch) { // generate new kinematics
+      if (++iBatch >= nBatch) { // generate new kinematics
 	E = 0;
 	while (1) {
 	  E = G4RandFlat::shoot(eMin, eMax);

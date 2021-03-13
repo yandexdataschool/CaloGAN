@@ -104,6 +104,24 @@ G4VPhysicalVolume* DetectorConstructionSpacal::DefineVolumes()
                  checkOverlaps ());  // checking overlaps 
   
   //                               
+  // Calorimeter  
+  //  
+    G4LogicalVolume* calorLV
+    = new G4LogicalVolume(
+			  new G4Box ("Calorimeter", calorSizeX/2, calorSizeY/2, spacalTotalLength/2),
+			  absorberMaterial,  // its material
+			  "Calorimeter");   // its name
+  
+  new G4PVPlacement(
+                 0,                // no rotation
+                 G4ThreeVector(),  // at (0,0,0)
+                 calorLV,          // its logical volume                         
+                 "calorimeter",    // its name
+                 worldLV,          // its mother  volume
+                 false,            // no boolean operation
+                 0,                // copy number
+                 checkOverlaps ());  // checking overlaps 
+  //                               
   // Calorimeter Y slice 
   //  
   G4LogicalVolume* calorSliceLV
@@ -115,7 +133,7 @@ G4VPhysicalVolume* DetectorConstructionSpacal::DefineVolumes()
   new G4PVReplica(
 		  "CalorimeterSlice",          // its name
 		  calorSliceLV,          // its logical volume
-		  worldLV,          // its mother
+		  calorLV,          // its mother
 		  kXAxis,           // axis of replication
 		  spacalModuleFibresXY * modulesX, // number of replica
 		  spacalPitchSize);  // witdth of replica
