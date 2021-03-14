@@ -156,24 +156,42 @@ G4VPhysicalVolume* DetectorConstructionSpacal::DefineVolumes()
 				 spacalModuleFibresXY * modulesX, // number of replica
 				 spacalPitchSize)  // witdth of replica
 		 );
-  //                               
-  // Fibre gap 
-  //  
-  G4LogicalVolume* gapLV =
-    new G4LogicalVolume ( new G4Box("gap", spacalGapSize/2, spacalGapSize/2, spacalTotalLength/2),
-			  gapMaterial,
-			  "gap");
+  // //                               
+  // // Fibre gap 
+  // //  
+  // G4LogicalVolume* gapLV =
+  //   new G4LogicalVolume ( new G4Box("gap", spacalGapSize/2, spacalGapSize/2, spacalTotalLength/2),
+  // 			  gapMaterial,
+  // 			  "gap");
   
-  new G4PVPlacement(
-                 0,                // no rotation
-                 G4ThreeVector(),  // at (0,0,0)
-                 gapLV,          // its logical volume                         
-                 "gap",    // its name
-                 calorCellLV,          // its mother  volume
-                 false,            // no boolean operation
-                 0,                // copy number
-                 checkOverlaps ());  // checking overlaps 
+  // new G4PVPlacement(
+  //                0,                // no rotation
+  //                G4ThreeVector(),  // at (0,0,0)
+  //                gapLV,          // its logical volume                         
+  //                "gap",    // its name
+  //                calorCellLV,          // its mother  volume
+  //                false,            // no boolean operation
+  //                0,                // copy number
+  //                checkOverlaps ());  // checking overlaps 
 
+  // //                               
+  // // Fibre 
+  // //  
+  // G4LogicalVolume* fibreLV =
+  //   new G4LogicalVolume ( new G4Box("fibre", spacalFibreSize/2, spacalGapSize/2, spacalTotalLength/2),
+  // 			  fibreMaterial,
+  // 			  "fibre");
+                                   
+  // SetSensitivePV (new G4PVPlacement(
+  // 				    0,                // no rotation
+  // 				    G4ThreeVector(),  // at (0,0,0)
+  // 				    fibreLV,          // its logical volume                         
+  // 				    "fibre",    // its name
+  // 				    gapLV,          // its mother  volume
+  // 				    false,            // no boolean operation
+  // 				    0,                // copy number
+  // 				    checkOverlaps ())  // checking overlaps
+  // 		  );
   //                               
   // Fibre 
   //  
@@ -187,7 +205,7 @@ G4VPhysicalVolume* DetectorConstructionSpacal::DefineVolumes()
 				    G4ThreeVector(),  // at (0,0,0)
 				    fibreLV,          // its logical volume                         
 				    "fibre",    // its name
-				    gapLV,          // its mother  volume
+				    calorCellLV,          // its mother  volume
 				    false,            // no boolean operation
 				    0,                // copy number
 				    checkOverlaps ())  // checking overlaps
