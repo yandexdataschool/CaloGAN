@@ -49,13 +49,16 @@ int main(int argc,char** argv)
   string fileName = string("caloGAN_")+string(G4UIcommand::ConvertToString (G4int(seed)));
   int nBatch = 1;
   int nLog = 1000;
-  double zOffset = 15*CLHEP::cm;
+  double zOffset = 0*CLHEP::cm;
 
   int iArg = 1;
   while (iArg < argc) {
     G4String cmd (argv[iArg++]);
     if (cmd == "-pdg") {
       partPDG = G4UIcommand::ConvertToInt(argv[iArg++]);
+    }
+    else if (cmd == "-seed") {
+      seed = G4UIcommand::ConvertToInt(argv[iArg++]);
     }
     else if (cmd == "-xy") {
       spotCenterX = G4UIcommand::ConvertToDouble(argv[iArg++])*CLHEP::cm;
@@ -159,7 +162,7 @@ int main(int argc,char** argv)
   
   // Choose the Random engine
   //
-  G4Random::setTheEngine(new CLHEP::RanecuEngine);
+  // G4Random::setTheEngine(new CLHEP::RanecuEngine);
 
   CLHEP::HepRandom::setTheSeed(seed);
   

@@ -23,6 +23,10 @@
 #include "G4PhysicalConstants.hh"
 #include "G4SystemOfUnits.hh"
 
+#include "SpacalMaterials.hh"
+
+
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 G4ThreadLocal 
@@ -92,7 +96,8 @@ G4VPhysicalVolume* DetectorConstructionShashlik::DefineVolumes()
   
   // Get materials
   G4Material* defaultMaterial = G4Material::GetMaterial("Galactic");
-  G4Material* absorberMaterial = G4Material::GetMaterial("G4_Pb");
+  //  G4Material* absorberMaterial = G4Material::GetMaterial("G4_Pb");
+  G4Material* absorberMaterial = SpacalMaterials::Lead();
   G4Material* scintillatorMaterial = G4Material::GetMaterial("Scintillator");
   
   if ( ! defaultMaterial || ! absorberMaterial || ! scintillatorMaterial ) {

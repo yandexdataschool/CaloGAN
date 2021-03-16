@@ -55,19 +55,14 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
     if (volume->GetName () == "Scintillator") {  // Shashlik option
       if (edep <= 0) return;
     }
-    else {  // SPACAL option
-      G4Track* theTrack = step->GetTrack () ;
-      G4ParticleDefinition* particleType = theTrack->GetDefinition ();
-      if( particleType == G4OpticalPhoton::OpticalPhotonDefinition()) {
-	//	G4String processName = theTrack->GetCreatorProcess()->GetProcessName();
-	//	const G4VProcess* currentProcess = step->GetPreStepPoint()->GetProcessDefinedStep();
-	//	G4String processNameCur = currentProcess ? currentProcess->GetProcessName() : "Unset";
-	//	std::cout << "Stop Optical photon: E="<<theTrack->GetTotalEnergy() << " produced: " << processName << " current process: " << processNameCur << std::endl;
-	
-	edep = theTrack->GetTotalEnergy();
-	theTrack->SetTrackStatus(fStopAndKill); // stop this photon
-      }
-    }
+    // else {  // SPACAL option
+    //   G4Track* theTrack = step->GetTrack () ;
+    //   G4ParticleDefinition* particleType = theTrack->GetDefinition ();
+    //   if( particleType == G4OpticalPhoton::OpticalPhotonDefinition()) {	
+    // 	edep = theTrack->GetTotalEnergy();
+    // 	theTrack->SetTrackStatus(fStopAndKill); // stop this photon
+    //   }
+    // }
       
     G4ThreeVector pos1 = step->GetPreStepPoint()->GetPosition();
     int ix = int (floor(pos1.x()/cellSize)) + calGranularityX/2;
@@ -79,7 +74,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
 	iy >= 0 && iy < calGranularityY &&
 	iz >= 0 && iz < nLogLayers) {
       RunData* runData = static_cast<RunData*> (G4RunManager::GetRunManager()->GetNonConstCurrentRun());
-      runData->AddSciDe(ix, iy, iz, edep/MeV);
+       runData->AddSciDe(ix, iy, iz, edep/MeV);
       //      cout << "enter energy: "<<ix<<':'<<iy<<':'<<iz<<" energy: "<<edep<< " XYZ: " << pos1.x() << ':'<< pos1.y() << ':'<< pos1.z() << endl;
     }
   }  

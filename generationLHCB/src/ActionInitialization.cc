@@ -4,6 +4,7 @@
 #include "RunAction.hh"
 #include "EventAction.hh"
 #include "SteppingAction.hh"
+#include "StackingAction.hh"
 #include "G4MTRunManager.hh"
 #include "DetectorConstruction.hh"
 
@@ -26,6 +27,7 @@ void ActionInitialization::Build() const
   //  SetUserAction(new PrimaryGeneratorAction);
   SetUserAction(new RunAction);
   SetUserAction(new EventAction);
+  SetUserAction(new StackingAction(fDetector));
   SetUserAction(new SteppingAction(fDetector));
 }  
 

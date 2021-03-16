@@ -5,7 +5,7 @@
 
 const int modulesX = 5;
 const int modulesY = modulesX;
-const int moduleCells = 6;  // assume square modules
+const int moduleCells = 8;  // assume square modules
 const int calGranularityX = modulesX * moduleCells;
 const int calGranularityY = modulesY * moduleCells;
 const G4double moduleSize = 121.2 * mm; // regular setup

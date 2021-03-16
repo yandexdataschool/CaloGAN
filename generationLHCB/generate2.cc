@@ -30,6 +30,7 @@
 
 #include "DetectorConstructionShashlik.hh"
 #include "ActionInitialization.hh"
+#include "OpticalPhotonPhysics.hh"
 
 #ifdef G4MULTITHREADED
 #include "G4MTRunManager.hh"
@@ -200,6 +201,12 @@ int main(int argc,char** argv)
   runManager->SetUserInitialization(detConstruction);
 
   G4VModularPhysicsList* physicsList = new FTFP_BERT;
+
+  const bool switchCherenkov = true;
+  const bool switchScintillation = true;
+  physicsList->RegisterPhysics (new OpticalPhotonPhysics(switchCherenkov, switchScintillation)); // add cherenkov and scintillation
+
+
   runManager->SetUserInitialization(physicsList);
     
   ActionInitialization* actionInitialization

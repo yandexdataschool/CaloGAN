@@ -53,8 +53,8 @@ G4VPhysicalVolume* DetectorConstructionSpacal::DefineVolumes()
   // else if ( mat == 11 ) AbMaterial = MyMaterials::LAPPD_Average() ;
   // else if ( mat == 12 ) AbMaterial = MyMaterials::StainlessSteel() ;
   // else if ( mat == 13 ) AbMaterial = MyMaterials::GarthTypographicAlloy() ;
-  //  G4Material* absorberMaterial = SpacalMaterials::Lead();
-  G4Material* absorberMaterial = SpacalMaterials::PureTungsten2();
+  G4Material* absorberMaterial = SpacalMaterials::Lead();
+  //G4Material* absorberMaterial = SpacalMaterials::PureTungsten2();
 
   // if      ( mat == 1 ) CrystalMaterial = MyMaterials::Quartz () ;
   // else if ( mat == 2 ) CrystalMaterial = MyMaterials::SiO2_Ce () ;
@@ -194,12 +194,12 @@ G4VPhysicalVolume* DetectorConstructionSpacal::DefineVolumes()
   // 		  );
   //                               
   // Fibre 
-  //  
+  //
+  
   G4LogicalVolume* fibreLV =
     new G4LogicalVolume ( new G4Box("fibre", spacalFibreSize/2, spacalGapSize/2, spacalTotalLength/2),
 			  fibreMaterial,
 			  "fibre");
-                                   
   SetSensitivePV (new G4PVPlacement(
 				    0,                // no rotation
 				    G4ThreeVector(),  // at (0,0,0)
@@ -210,7 +210,6 @@ G4VPhysicalVolume* DetectorConstructionSpacal::DefineVolumes()
 				    0,                // copy number
 				    checkOverlaps ())  // checking overlaps
 		  );
-
   //
   // print parameters
   //

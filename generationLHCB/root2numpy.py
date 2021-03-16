@@ -23,9 +23,9 @@ pdg = []
 
 for rootfile in rootfiles:
     data = root2array (rootfile, 'ecalNT')
-
+    matrixSize = int(np.sqrt (len(data[0][0])))
     for row in data:
-        ed.append (np.array(row[0]).reshape ((30,30,-1)))
+        ed.append (np.array(row[0]).reshape ((matrixSize, matrixSize,-1)))
         tes.append (row[1])
         tea.append (row[2])
         pp.append (np.array(row[3]))
