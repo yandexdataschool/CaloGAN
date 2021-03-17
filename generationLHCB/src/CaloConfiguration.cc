@@ -45,3 +45,20 @@ double CaloConfiguration::calorLength () const {
 double CaloConfiguration::frontCellLength () const {
   return isShashlik() ? fShashlik.frontCellLength : fSpacal.frontCellLength;
 }
+
+bool CaloConfiguration::cherenkovPhotonsSignal () const {
+  if (isShashlik()) return false;
+  switch (spacal().fibreMaterial) {
+  case SpacalCaloConfiguration::QUARTZ:  return true;
+  default: return false;
+  }
+}
+
+bool CaloConfiguration::ionizationLossesSignal () const {
+  if (isShashlik()) return true;
+  switch (spacal().fibreMaterial) {
+  case SpacalCaloConfiguration::GAGG:  return true;
+  case SpacalCaloConfiguration::POLYSTYRENE:  return true;
+  default: return false;
+  }
+}

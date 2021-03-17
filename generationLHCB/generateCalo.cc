@@ -103,6 +103,9 @@ int main(int argc,char** argv)
     }
  }
 
+  if (iCase) {
+    fileName =  string("caloGAN_case")+string(G4UIcommand::ConvertToString (G4int(iCase))) + string ("_")+string(G4UIcommand::ConvertToString (G4int(seed)));
+  }
   if (iCase == 11) {
     // shashlik nonsplit
     ShashlikCaloConfiguration shashlik;
@@ -201,9 +204,11 @@ int main(int argc,char** argv)
 
   // Physics
   G4VModularPhysicsList* physicsList = new FTFP_BERT;
-  const bool switchCherenkov = true;
-  const bool switchScintillation = false;
-  physicsList->RegisterPhysics (new OpticalPhotonPhysics(switchScintillation, switchCherenkov)); // add cherenkov and scintillation
+  if (config.cherenkovPhotonsSignal ()) { // add Cerenkov's photons production
+    const bool switchCherenkov = true;
+    const bool switchScintillation = false; // never want it 
+    physicsList->RegisterPhysics (new OpticalPhotonPhysics(switchScintillation, switchCherenkov)); // add cherenkov and scintillation
+  }
   runManager->SetUserInitialization(physicsList);
     
   ActionInitialization* actionInitialization

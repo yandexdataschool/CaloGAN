@@ -87,6 +87,9 @@ public:
   
   const ShashlikCaloConfiguration& shashlik () const {return fShashlik;}
   const SpacalCaloConfiguration& spacal () const {return fSpacal;}
+
+  bool cherenkovPhotonsSignal () const;
+  bool ionizationLossesSignal () const;
   
 private:
   bool fIsShashlik;
