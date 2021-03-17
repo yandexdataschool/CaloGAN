@@ -56,3 +56,37 @@ void RunData::Reset() {
   fParticlePDG = 0;
 }
 
+inline void RunData::AddSignalEnergy(const CaloConfiguration& config, const G4ThreeVector pos, G4double de) {
+  double cellSize = config.cellSize();
+  int calGranularity = config.calGranularity();
+  int nLogLayers = 1;
+ 
+  int ix = int (floor(pos.x()/cellSize)) + calGranularity/2;
+  int iy = int (floor(pos.y()/cellSize)) + calGranularityY/2;
+  int iz = 0;
+  if (config.frontCellLength () > 0) { // split two layers
+    double zSplitWorld = config.frontCellLength () - config.calorLength () / 2;
+    if (pos.z() > zSplitWorld) iz = 1;
+    nLogLayers = 2;
+  }
+  else if (config.isShashlik && (config.shashlik.aggregateLayers < config.shashlik.nLayers)) {
+    double layerThickness = config.shashlik.sciDepth + config.shashlik.absorberDepth;
+    int nLayers = config.shashlik.nLayers;
+    int iz = int (floor(pos.z()/layerThickness)) + nLayers/2;
+    iz = int (iz / config.shashlik.aggregateLayers);
+    nLogLayers = nLayers / config.shashlik.aggregateLayers;
+  }
+  if (fEnergyDeposit.empty()) { //initiate container
+    fEnergyDeposit = std::vector<G4double> (calGranularity*calGranularity*nLogLayers)
+  }
+  int index = (ix * calGranularity + iy) * nLogLayers + iz;
+  if (index >= 0 && index < fEnergyDeposit.size()) {
+    fEnergyDeposit[ (ix * calGranularityY + iy) * nLogLayers + iz] += de;
+  }
+  fTotalEnergySci += de;
+}
+
+inline void RunData::AddAbsorberEnergy(G4double de) {
+  fTotalEnergyAbsorb += de;
+}
+

@@ -9,8 +9,6 @@
 #include "Randomize.hh"
 #include <iostream>
 
-#include "constants.hh"
-
 using namespace std;
 
 EventAction::EventAction()

@@ -28,6 +28,11 @@ SteppingAction::~SteppingAction()
 
 void SteppingAction::UserSteppingAction(const G4Step* step)
 {
+  // only interested in dE for shashlik
+  if (!fConfiguration->isShashlik()) return;
+  G4double edep = step->GetTotalEnergyDeposit();
+  if (edep <= 0) return 
+  
 // Collect energy and track length step by step
 
   // get volume of the current step
@@ -42,16 +47,20 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
   // 	<< endl;
 
 
+  RunData* runData = static_cast<RunData*> (G4RunManager::GetRunManager()->GetNonConstCurrentRun());
    
-
-  
   // energy deposit
-  G4double edep = step->GetTotalEnergyDeposit();
-  if (edep > 0 &&  volume == fDetConstruction->GetAbsorberPV() ) {
-    RunData* runData = static_cast<RunData*> (G4RunManager::GetRunManager()->GetNonConstCurrentRun());
-    runData->AddAbsDe (edep/MeV);
+  if (volume == fConfiguration->absorberPV() ) {
+    runData->AddAbsorberEnergy (edep/MeV);
   }
-  if (volume == fDetConstruction->GetSensitivePV() ) {
+  else if (volume == config->sensitivePV() ) {
+    G4ThreeVector pos = step->GetPreStepPoint()->GetPosition();
+    runData->AddSignalEnergy (config, pos, edep/MeV);
+  }
+}
+
+
+    
     if (volume->GetName () == "Scintillator") {  // Shashlik option
       if (edep <= 0) return;
     }

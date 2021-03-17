@@ -1,34 +1,6 @@
-//
-// ********************************************************************
-// * License and Disclaimer                                           *
-// *                                                                  *
-// * The  Geant4 software  is  copyright of the Copyright Holders  of *
-// * the Geant4 Collaboration.  It is provided  under  the terms  and *
-// * conditions of the Geant4 Software License,  included in the file *
-// * LICENSE and available at  http://cern.ch/geant4/license .  These *
-// * include a list of copyright holders.                             *
-// *                                                                  *
-// * Neither the authors of this software system, nor their employing *
-// * institutes,nor the agencies providing financial support for this *
-// * work  make  any representation or  warranty, express or implied, *
-// * regarding  this  software system or assume any liability for its *
-// * use.  Please see the license in the file  LICENSE  and URL above *
-// * for the full disclaimer and the limitation of liability.         *
-// *                                                                  *
-// * This  code  implementation is the result of  the  scientific and *
-// * technical work of the GEANT4 collaboration.                      *
-// * By using,  copying,  modifying or  distributing the software (or *
-// * any work based  on the software)  you  agree  to acknowledge its *
-// * use  in  resulting  scientific  publications,  and indicate your *
-// * acceptance of all terms of the Geant4 Software license.          *
-// ********************************************************************
-//
-// $Id: example.cc 86065 2014-11-07 08:51:15Z gcosmo $
-//
-/// \file example.cc
-/// \brief Main program of the  example
+// Fedor Ratnikov
 
-#include "DetectorConstructionShashlik.hh"
+#include "DetectorConstructionSpacal.hh"
 #include "ActionInitialization.hh"
 #include "OpticalPhotonPhysics.hh"
 
@@ -46,17 +18,17 @@
 
 #include "G4VisExecutive.hh"
 #include "G4UIExecutive.hh"
+#include "G4PhysListFactory.hh"
+#include "G4VModularPhysicsList.hh"
 
 #include "time.h"
 #include <unistd.h>
 
-#include "constants.hh"
+#include "CaloConfiguration.hh"
 
 using namespace std;
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 
-//int main(int argc,char** argv)
 int main(int argc,char** argv)
 {
   G4long seed = abs(((time(NULL) * 181) * ((getpid() - 83) * 359)) % 104729);
@@ -78,12 +50,17 @@ int main(int argc,char** argv)
   int nBatch = 1;
   int nLog = 1000;
   double zOffset = 15*CLHEP::cm;
+  CaloConfiguration config;
+  
 
   int iArg = 1;
   while (iArg < argc) {
     G4String cmd (argv[iArg++]);
     if (cmd == "-pdg") {
       partPDG = G4UIcommand::ConvertToInt(argv[iArg++]);
+    }
+    else if (cmd == "-seed") {
+      seed = G4UIcommand::ConvertToInt(argv[iArg++]);
     }
     else if (cmd == "-xy") {
       spotCenterX = G4UIcommand::ConvertToDouble(argv[iArg++])*CLHEP::cm;
@@ -187,7 +164,7 @@ int main(int argc,char** argv)
   
   // Choose the Random engine
   //
-  G4Random::setTheEngine(new CLHEP::RanecuEngine);
+  // G4Random::setTheEngine(new CLHEP::RanecuEngine);
 
   CLHEP::HepRandom::setTheSeed(seed);
   
@@ -195,22 +172,21 @@ int main(int argc,char** argv)
   //
   G4RunManager * runManager = new G4RunManager;
 
+
   // Set mandatory initialization classes
   //
-  DetectorConstruction* detConstruction = new DetectorConstructionShashlik();
+  DetectorConstruction* detConstruction = new DetectorConstruction(config);
   runManager->SetUserInitialization(detConstruction);
 
+  // Physics
   G4VModularPhysicsList* physicsList = new FTFP_BERT;
-
   const bool switchCherenkov = true;
   const bool switchScintillation = true;
   physicsList->RegisterPhysics (new OpticalPhotonPhysics(switchCherenkov, switchScintillation)); // add cherenkov and scintillation
-
-
   runManager->SetUserInitialization(physicsList);
     
   ActionInitialization* actionInitialization
-     = new ActionInitialization(detConstruction);
+    = new ActionInitialization(config);
   runManager->SetUserInitialization(actionInitialization);
 
   runManager->Initialize();   
@@ -286,7 +262,7 @@ int main(int argc,char** argv)
 	
 	G4PrimaryParticle* g4part = new G4PrimaryParticle( g4pd, pz*dxdz, pz*dydz, pz, E );
       
-      G4PrimaryVertex* g4vtx = new G4PrimaryVertex( x0, y0, -0.5*totalLength, 0. ); // xyzt
+      G4PrimaryVertex* g4vtx = new G4PrimaryVertex( x0, y0, -0.5*spacalTotalLength, 0. ); // xyzt
       g4vtx->SetPrimary(g4part);
       G4Event* g4evt = new G4Event( iev );
       g4evt->AddPrimaryVertex(g4vtx);

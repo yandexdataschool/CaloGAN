@@ -6,12 +6,11 @@
 #include "SteppingAction.hh"
 #include "StackingAction.hh"
 #include "G4MTRunManager.hh"
-#include "DetectorConstruction.hh"
+#include "CaloConfiguration.hh"
 
-
-ActionInitialization::ActionInitialization (const DetectorConstruction* detector)
+ActionInitialization::ActionInitialization (const CaloConfiguration* configuration)
   : G4VUserActionInitialization(),
-    fDetector (detector)
+    fConfiguration (configuration)
 {}
 
 ActionInitialization::~ActionInitialization()
@@ -27,7 +26,7 @@ void ActionInitialization::Build() const
   //  SetUserAction(new PrimaryGeneratorAction);
   SetUserAction(new RunAction);
   SetUserAction(new EventAction);
-  SetUserAction(new StackingAction(fDetector));
-  SetUserAction(new SteppingAction(fDetector));
+  SetUserAction(new StackingAction(fConfiguration));
+  SetUserAction(new SteppingAction(fConfiguration));
 }  
 

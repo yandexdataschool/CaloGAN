@@ -10,8 +10,6 @@
 #include "G4SystemOfUnits.hh"
 #include <sstream>
 
-#include "constants.hh"
-
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -72,6 +70,8 @@ void RunAction::EndOfRunAction(const G4Run* /*aRun*/)
   //
   analysisManager->Write();
   analysisManager->CloseFile();
+  G4cout << "Close output file " << fileName << G4endl;
+  
 
 }
 

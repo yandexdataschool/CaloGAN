@@ -5,7 +5,7 @@
 #include "G4UserSteppingAction.hh"
 #include "g4root.hh"
 
-class DetectorConstruction;
+class CaloConfiguration;
 
 /// Stepping action class.
 ///
@@ -16,13 +16,13 @@ class DetectorConstruction;
 class SteppingAction : public G4UserSteppingAction
 {
 public:
-  SteppingAction(const DetectorConstruction* detectorConstruction);
+  SteppingAction(const CaloConfiguration* config);
   virtual ~SteppingAction();
 
   virtual void UserSteppingAction(const G4Step* step);
 
 private:
-  const DetectorConstruction* fDetConstruction;
+  const CaloConfiguration* fConfiguration;
 };
 
 
