@@ -4,6 +4,10 @@ import sys
 import numpy as np
 from root_numpy import root2array
 
+def isSquare (s2):
+    sq = int (np.sqrt(s2))
+    return (sq*sq == s2)
+
 rootfiles = sys.argv[1:]
 npzfile = '.npz'
 for rootfile in rootfiles:
@@ -23,7 +27,15 @@ pdg = []
 
 for rootfile in rootfiles:
     data = root2array (rootfile, 'ecalNT')
-    matrixSize = int(np.sqrt (len(data[0][0])))
+    dim = len(data[0][0])
+    if isSquare(dim):
+        matrixSize = int(np.sqrt (dim))
+    elif isSquare(dim/2):
+        matrixSize = int(np.sqrt (dim/2))
+    else:
+        print ("Veristrange dimensions:", dim)
+        sys.exit(1)
+        
     for row in data:
         ed.append (np.array(row[0]).reshape ((matrixSize, matrixSize,-1)))
         tes.append (row[1])

@@ -28,7 +28,7 @@
 
 const bool checkOverlaps = true;
 
-G4VPhysicalVolume* DetectorConstructionSpacal::Construct()
+G4VPhysicalVolume* DetectorConstruction::Construct()
 {
   
   G4Material* airMaterial = SpacalMaterials::Air();
@@ -68,10 +68,13 @@ G4VPhysicalVolume* DetectorConstructionSpacal::Construct()
   // else if ( mat == 17 ) CrystalMaterial = MyMaterials::GAGG_ILM(user_lightyield,scaleFactor) ;
 
   // Scintilator material
-  a = 1.01*g/mole;
-  G4Element* elH  = new G4Element("Hydrogen", "H" , z=1., a);
-  a = 12.01*g/mole;
-  G4Element* elC  = new G4Element("Carbon"  ,"C" , z=6., a);
+  double a;
+  double z;
+  double density;
+  int natoms;
+  
+  G4Element* elH  = new G4Element("Hydrogen", "H" , z=1., a=1.01*g/mole);
+  G4Element* elC  = new G4Element("Carbon"  ,"C" , z=6., a=12.01*g/mole);
   G4Material* Sci = new G4Material("Scintillator", density = 1.032*g/cm3, 2);
   Sci->AddElement(elC, natoms=9);
   Sci->AddElement(elH, natoms=10);
@@ -81,21 +84,23 @@ G4VPhysicalVolume* DetectorConstructionSpacal::Construct()
 
   G4Material* absorberMaterial = SpacalMaterials::Lead();
   G4Material* sensitiveMaterial = Sci;
-  if (config->isSpacal()) {
+  if (!config->isShashlik()) {
     switch (config->spacal().absorberMaterial) {
-    case TUNGSTEN:
+    case SpacalCaloConfiguration::TUNGSTEN:
       absorberMaterial = SpacalMaterials::PureTungsten2();
+      break;
+    default:
       break;
     }
     switch (config->spacal().fibreMaterial) {
-    case QUARTZ:
+    case SpacalCaloConfiguration::QUARTZ:
       sensitiveMaterial = SpacalMaterials::Quartz();
       break;
-    case GAGG:
-      //      sensitiveMaterial = SpacalMaterials::Quartz();
+    case SpacalCaloConfiguration::GAGG:
+      sensitiveMaterial = SpacalMaterials::GAGG_Ce_Mg(-1,1);
       break;
-    case POLYSTYRENE:
-      //      sensitiveMaterial = SpacalMaterials::Quartz();
+    case SpacalCaloConfiguration::POLYSTYRENE:
+      sensitiveMaterial = SpacalMaterials::Polystyrene(-1,1);
       break;
     }
     
@@ -137,7 +142,7 @@ G4VPhysicalVolume* DetectorConstructionSpacal::Construct()
   //
   G4LogicalVolume* calorLV
     = new G4LogicalVolume(
-			  new G4Box ("Calorimeter", calorWidth/2, calorWidth/2,  calorLength/2);
+			  new G4Box ("Calorimeter", calorWidth/2, calorWidth/2,  calorLength/2),
 			  absorberMaterial,  // its material
 			  "Calorimeter");   // its name
   
@@ -154,17 +159,13 @@ G4VPhysicalVolume* DetectorConstructionSpacal::Construct()
   // Calorimeter structure
   //
   if (config->isShashlik ()) { // Shashlik calo
-    const double absorberThickness = config->shashlik.absorberDepth;
-    const double scintillatorThickness = config->shashlik.sciDepth;
+    const double absorberThickness = config->shashlik().absorberDepth;
+    const double scintillatorThickness = config->shashlik().sciDepth;
     const double layerThickness = absorberThickness + scintillatorThickness;
-    int nLayers = config->shashlik.nLayers;
+    int nLayers = config->shashlik().nLayers;
     //                                 
     // Layer
     //
-    G4VSolid* layerS 
-      = new G4Box("Layer",           // its name
-		  calorWidth/2, calorWidth/2, /2); // its size
-    
     G4LogicalVolume* layerLV
       = new G4LogicalVolume(
 			    new G4Box ("Layer", calorWidth/2, calorWidth/2, layerThickness/2),           // its solid
@@ -204,7 +205,7 @@ G4VPhysicalVolume* DetectorConstructionSpacal::Construct()
     = new G4LogicalVolume(
                  new G4Box("Scintillator",             // its name
 			   calorWidth/2, calorWidth/2, scintillatorThickness/2),
-                 scintillatorMaterial,      // its material
+                 sensitiveMaterial,      // its material
                  "Scintillator");           // its name
                                    
   sensitivePV = new G4PVPlacement(
@@ -218,7 +219,7 @@ G4VPhysicalVolume* DetectorConstructionSpacal::Construct()
 				  checkOverlaps);  // checking overlaps 
   }
   else { // spacal calo
-    const double spacalPitchSize = config->calorSize() / config->spacal.fibers;
+    const double spacalPitchSize = config->moduleSize() / config->spacal().fibres;
     //                               
     // Calorimeter Y slice 
     //  
@@ -233,7 +234,7 @@ G4VPhysicalVolume* DetectorConstructionSpacal::Construct()
 		    calorSliceLV,          // its logical volume
 		    calorLV,          // its mother
 		    kXAxis,           // axis of replication
-		    config->spacal.fibers * config->modules(), // number of replica
+		    config->spacal().fibres * config->modules(), // number of replica
 		    spacalPitchSize);  // witdth of replica
     
     //                               
@@ -251,7 +252,7 @@ G4VPhysicalVolume* DetectorConstructionSpacal::Construct()
 				 calorCellLV,          // its logical volume
 				 calorSliceLV,          // its mother
 				 kYAxis,           // axis of replication
-				 config->spacal.fibers * config->modules(), // number of replica
+				 config->spacal().fibres * config->modules(), // number of replica
 				 spacalPitchSize);  // witdth of replica
     
     
@@ -260,8 +261,8 @@ G4VPhysicalVolume* DetectorConstructionSpacal::Construct()
     //
     
     G4LogicalVolume* fibreLV =
-      new G4LogicalVolume ( new G4Box("fibre", config->spacal.fibreSize/2, config->spacal.fibreSize/2, calorLength/2),
-			    fibreMaterial,
+      new G4LogicalVolume ( new G4Box("fibre", config->spacal().fibreSize/2, config->spacal().fibreSize/2, calorLength/2),
+			    sensitiveMaterial,
 			    "fibre");
     sensitivePV = new G4PVPlacement(
 				    0,                // no rotation

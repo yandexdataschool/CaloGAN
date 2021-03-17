@@ -6,13 +6,13 @@
 #include "G4ClassificationOfNewTrack.hh"
 
 class G4Track;
-class DetectorConstruction;
+class CaloConfiguration;
 
 
 
 class StackingAction : public G4UserStackingAction {
 public:
-  StackingAction(const DetectorConstruction* detectorConstruction) :  fDetConstruction (detectorConstruction) {}
+  StackingAction(const CaloConfiguration* config) :  fCaloConfiguration (config) {}
   virtual ~StackingAction();
   virtual G4ClassificationOfNewTrack ClassifyNewTrack(const G4Track* aTrack);
 //    Reply G4ClassificationOfNewTrack determined by the
@@ -36,7 +36,7 @@ public:
 //
   
 private:
-  const DetectorConstruction* fDetConstruction;
+  const CaloConfiguration* fCaloConfiguration;
 };
  
 #endif

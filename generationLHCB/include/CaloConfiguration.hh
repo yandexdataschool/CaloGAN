@@ -3,7 +3,7 @@
 
 #include "G4SystemOfUnits.hh"
 
-class  G4VPhysicalVolume* absorberPV;
+class  G4VPhysicalVolume;
 
 class ShashlikCaloConfiguration {
 public:
@@ -15,7 +15,6 @@ public:
     nLayers (66),
     aggregateLayers (nLayers),
     frontCellLength (0)
-
   {}
   
   int modules;
@@ -23,7 +22,7 @@ public:
   double sciDepth;
   double absorberDepth;
   int nLayers;
-  int aggregateLayersFibreMaterial
+  int aggregateLayers;
   double frontCellLength;
 };
 
@@ -44,9 +43,9 @@ public:
     cells (8),
     fibres (72),
     fibreSize (1*mm),
-    length (140mm),
+    length (140*mm),
     frontCellLength (0),
-    fibreMaterial (QUARTZ)
+    fibreMaterial (QUARTZ),
     absorberMaterial (TUNGSTEN)
   {}
 
@@ -56,9 +55,8 @@ public:
   double fibreSize;
   double length;
   double frontCellLength;
-  FibreMaterial fibreMaterial
-  AbsorberMaterial absorberMaterial
-  
+  FibreMaterial fibreMaterial;
+  AbsorberMaterial absorberMaterial;
 };
 
 
@@ -69,54 +67,35 @@ public:
   CaloConfiguration (const ShashlikCaloConfiguration& cfg);
   CaloConfiguration (const SpacalCaloConfiguration& cfg);
   
-  bool isShashlik() const {return isShashlik;} 
+  bool isShashlik() const {return fIsShashlik;} 
   int modules() const;
   int cells() const;
   int calGranularity () const {return modules() * cells();}
-  double moduleSize ()  const {return moduleSize;}
+  double moduleSize ()  const {return fModuleSize;}
   double calorSize () const {return moduleSize() * modules();}
   double cellSize () const {return moduleSize() / cells();}
   double calorLength () const;
   double frontCellLength () const;
   
-  const G4VPhysicalVolume* absorberPV() const {return absorberPV;}
-  const G4VPhysicalVolume* sensitivePV() const {return absorberPV;}
-  void setPV (const G4VPhysicalVolume* theAbsorberPV, const G4VPhysicalVolume* theSensitivePV) {
-    if (theAbsorberPV) absorberPV = theAbsorberPV;
-    if (theSensitivePV) sensitivePV = theSensitivePV;
+  const G4VPhysicalVolume* absorberPV() const {return fAbsorberPV;}
+  const G4VPhysicalVolume* sensitivePV() const {return fSensitivePV;}
+  void setPV (const G4VPhysicalVolume* absorberPV, const G4VPhysicalVolume* sensitivePV) {
+    if (absorberPV) fAbsorberPV = absorberPV;
+    if (sensitivePV) fSensitivePV = sensitivePV;
   }
   
   
-  const ShashlikCaloConfiguration& shashlik () const {return shashlik;}
-  const SpacalCaloConfiguration& spacal () const {return spacal;}
+  const ShashlikCaloConfiguration& shashlik () const {return fShashlik;}
+  const SpacalCaloConfiguration& spacal () const {return fSpacal;}
   
 private:
-  bool isShashlik;
-  ShashlikCaloConfiguration shashlik;
-  SpacalCaloConfiguration spacal;
-  double moduleSize;
-  const G4VPhysicalVolume* absorberPV;
-  const G4VPhysicalVolume* sensitivePV;
+  bool fIsShashlik;
+  ShashlikCaloConfiguration fShashlik;
+  SpacalCaloConfiguration fSpacal;
+  double fModuleSize;
+  const G4VPhysicalVolume* fAbsorberPV;
+  const G4VPhysicalVolume* fSensitivePV;
 };
 
-
-  
-  int modules;
-  int cells;
-  
-  int modulesX;
-  int moduleCells = 8;
-  double moduleSize = 121.2 * mm;
-  double ShashlikScintillatorThickness = 4. * mm;
-  double shashlikAbsorberThickness = 2. * mm;
-  int shashlikLayers = 66;
-  int aggregateLayers = 66;
-
-  double spacalTotalLength = 140. * mm;
-  int spacalModuleFibresXY = 72;
-  double spacalFibreSize = 1*mm;
-  double spacalGapSize = spacalFibreSize + 0.1*2*mm;
-
-};
 
 #endif

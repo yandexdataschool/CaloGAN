@@ -8,9 +8,9 @@
 #include "G4MTRunManager.hh"
 #include "CaloConfiguration.hh"
 
-ActionInitialization::ActionInitialization (const CaloConfiguration* configuration)
+ActionInitialization::ActionInitialization (const CaloConfiguration& configuration)
   : G4VUserActionInitialization(),
-    fConfiguration (configuration)
+    fConfiguration (&configuration)
 {}
 
 ActionInitialization::~ActionInitialization()

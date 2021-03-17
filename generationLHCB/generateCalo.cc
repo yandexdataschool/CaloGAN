@@ -1,6 +1,6 @@
 // Fedor Ratnikov
 
-#include "DetectorConstructionSpacal.hh"
+#include "DetectorConstruction.hh"
 #include "ActionInitialization.hh"
 #include "OpticalPhotonPhysics.hh"
 
@@ -103,60 +103,81 @@ int main(int argc,char** argv)
     }
  }
 
-  if (iCase == 1) {
-    spotCenterX = 0;
-    spotCenterY = 0;
-    spotSize = 0;
-    spotAngleX = 0.;
-    spotAngleY = 0.;
-    spotAngleSize = 0;
-    eMin = 10.*CLHEP::GeV;
-    eMax = eMin;
-    fileName = string ("caloGAN_v3_case1");
+  if (iCase == 11) {
+    // shashlik nonsplit
+    ShashlikCaloConfiguration shashlik;
+    shashlik.modules = 5;
+    shashlik.cells = 6;
+    shashlik.sciDepth = 4*mm;
+    shashlik.absorberDepth = 2*mm;
+    shashlik.nLayers = 66;
+    shashlik.aggregateLayers = 66;
+    shashlik.frontCellLength = 0;
+    config = CaloConfiguration (shashlik);
   }
-  else if (iCase == 2) {
-    spotCenterX = -0.46881875;
-    spotCenterY = -0.62373408;
-    spotSize = 0;
-    spotAngleX = 0.06402305307487648;
-    spotAngleY = 0.06020062458846305;
-    spotAngleSize = 0;
-    eMin = 2.455*CLHEP::GeV;
-    eMax = eMin;
-    fileName = string ("caloGAN_v3_case2");
+  else if (iCase == 12) {
+    // shashlik split
+    ShashlikCaloConfiguration shashlik;
+    shashlik.modules = 5;
+    shashlik.cells = 6;
+    shashlik.sciDepth = 4*mm;
+    shashlik.absorberDepth = 2*mm;
+    shashlik.nLayers = 66;
+    shashlik.aggregateLayers = 66;
+    shashlik.frontCellLength = 110*mm;
+    config = CaloConfiguration (shashlik);
   }
-  else if (iCase == 3) {
-    spotCenterX = 0.76913061;
-    spotCenterY = -0.59072689;
-    spotSize = 0;
-    spotAngleX = -0.05503867598374685;
-    spotAngleY = 0.02786821220815182;
-    spotAngleSize = 0;
-    eMin = 29.1*CLHEP::GeV;
-    eMax = eMin;
-    fileName = string ("caloGAN_v3_case3");
+  else if (iCase == 21) {
+    //spacal W/GAGG nonsplit
+    SpacalCaloConfiguration spacal;
+    spacal.modules = 5;
+    spacal.cells = 8;
+    spacal.fibres = 72;
+    spacal.fibreSize = 1*mm;
+    spacal.length = 150*mm;
+    spacal.frontCellLength = 0;
+    spacal.fibreMaterial = SpacalCaloConfiguration::GAGG;
+    spacal.absorberMaterial = SpacalCaloConfiguration::TUNGSTEN;
+    config = CaloConfiguration (spacal);
   }
-  else if (iCase == 4) {
-    spotCenterX = -0.53223262;   
-    spotCenterY = 0.43305124;
-    spotSize = 0;
-    spotAngleX = 0.10565136078827912;
-    spotAngleY = -0.1443055254303747;
-    spotAngleSize = 0;
-    eMin = 16.9*CLHEP::GeV;
-    eMax = eMin;
-    fileName = string ("caloGAN_v3_case4");
+  else if (iCase == 22) {
+    //spacal W/GAGG nonsplit
+    SpacalCaloConfiguration spacal;
+    spacal.modules = 5;
+    spacal.cells = 8;
+    spacal.fibres = 72;
+    spacal.fibreSize = 1*mm;
+    spacal.length = 150*mm;
+    spacal.frontCellLength = 45*mm;
+    spacal.fibreMaterial = SpacalCaloConfiguration::GAGG;
+    spacal.absorberMaterial = SpacalCaloConfiguration::TUNGSTEN;
+    config = CaloConfiguration (spacal);
   }
-  else if (iCase == 5) {
-    spotCenterX = 0.23922617;   
-    spotCenterY = 0.93010209;
-    spotSize = 0;
-    spotAngleX = -0.08056594500939052;
-    spotAngleY = -0.3961654441952705;
-    spotAngleSize = 0;
-    eMin = 34.0*CLHEP::GeV;
-    eMax = eMin;
-    fileName = string ("caloGAN_v3_case5");
+  else if (iCase == 31) {
+    //spacal Pb/PS nonsplit
+    SpacalCaloConfiguration spacal;
+    spacal.modules = 5;
+    spacal.cells = 4;
+    spacal.fibres = 72;
+    spacal.fibreSize = 1*mm;
+    spacal.length = 290*mm;
+    spacal.frontCellLength = 0;
+    spacal.fibreMaterial = SpacalCaloConfiguration::POLYSTYRENE;
+    spacal.absorberMaterial = SpacalCaloConfiguration::LEAD;
+    config = CaloConfiguration (spacal);
+  }
+  else if (iCase == 32) {
+    //spacal Pb/PS split
+    SpacalCaloConfiguration spacal;
+    spacal.modules = 5;
+    spacal.cells = 4;
+    spacal.fibres = 72;
+    spacal.fibreSize = 1*mm;
+    spacal.length = 290*mm;
+    spacal.frontCellLength = 80*mm;
+    spacal.fibreMaterial = SpacalCaloConfiguration::POLYSTYRENE;
+    spacal.absorberMaterial = SpacalCaloConfiguration::LEAD;
+    config = CaloConfiguration (spacal);
   }
 
   setenv("GAN_FNAME",fileName.c_str(),1);  // let RunAction to set filename properly
@@ -181,8 +202,8 @@ int main(int argc,char** argv)
   // Physics
   G4VModularPhysicsList* physicsList = new FTFP_BERT;
   const bool switchCherenkov = true;
-  const bool switchScintillation = true;
-  physicsList->RegisterPhysics (new OpticalPhotonPhysics(switchCherenkov, switchScintillation)); // add cherenkov and scintillation
+  const bool switchScintillation = false;
+  physicsList->RegisterPhysics (new OpticalPhotonPhysics(switchScintillation, switchCherenkov)); // add cherenkov and scintillation
   runManager->SetUserInitialization(physicsList);
     
   ActionInitialization* actionInitialization
@@ -200,9 +221,9 @@ int main(int argc,char** argv)
   G4ParticleDefinition* g4pd = ptable->FindParticle( partPDG );
 
   cout << "Detector parameters: " << endl
-       << " detector dimensions: " << calorSizeX/mm << 'x' << calorSizeY/mm << 'x' << totalLength/mm << "mm^3" << endl
-       << " granularity: " << calGranularityX << 'x' << calGranularityY << 'x' << nLogLayers << endl
-       << " cell size: " << cellSize/mm << 'x' << cellSize/mm << "mm^2"
+       << " detector dimensions: " << config.calorSize()/mm << 'x' << config.calorSize()/mm << 'x' << config.calorLength()/mm << "mm^3" << endl
+       << " granularity: " << config.calGranularity() << 'x' << config.calGranularity()  << endl
+       << " cell size: " << config.cellSize()/mm << 'x' << config.cellSize()/mm << "mm^2"
        << endl;
 
   cout << "Job parameters:" << endl
@@ -262,7 +283,7 @@ int main(int argc,char** argv)
 	
 	G4PrimaryParticle* g4part = new G4PrimaryParticle( g4pd, pz*dxdz, pz*dydz, pz, E );
       
-      G4PrimaryVertex* g4vtx = new G4PrimaryVertex( x0, y0, -0.5*spacalTotalLength, 0. ); // xyzt
+	G4PrimaryVertex* g4vtx = new G4PrimaryVertex( x0, y0, -0.5*config.calorLength (), 0. ); // xyzt
       g4vtx->SetPrimary(g4part);
       G4Event* g4evt = new G4Event( iev );
       g4evt->AddPrimaryVertex(g4vtx);

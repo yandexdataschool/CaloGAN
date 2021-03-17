@@ -4,12 +4,12 @@
 
 #include "G4VUserActionInitialization.hh"
 
-class DetectorConstruction;
+class CaloConfiguration;
 
 class ActionInitialization : public G4VUserActionInitialization
 {
 public:
-  ActionInitialization(const CaloConfiguration*);
+  ActionInitialization(const CaloConfiguration&);
   virtual ~ActionInitialization();
   
   virtual void BuildForMaster() const;

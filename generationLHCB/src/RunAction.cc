@@ -69,8 +69,8 @@ void RunAction::EndOfRunAction(const G4Run* /*aRun*/)
   // save histograms & ntuple
   //
   analysisManager->Write();
+  G4cout << "Closing output file " << analysisManager->GetFileName () << G4endl;
   analysisManager->CloseFile();
-  G4cout << "Close output file " << fileName << G4endl;
   
 
 }
