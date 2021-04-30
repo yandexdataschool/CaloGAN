@@ -43,6 +43,7 @@ public:
     cells (8),
     fibres (72),
     fibreSize (1*mm),
+    airGap (0.1*mm),
     length (140*mm),
     frontCellLength (0),
     fibreMaterial (QUARTZ),
@@ -53,6 +54,7 @@ public:
   int cells;
   int fibres;
   double fibreSize;
+  double airGap;
   double length;
   double frontCellLength;
   FibreMaterial fibreMaterial;

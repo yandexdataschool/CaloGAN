@@ -256,23 +256,67 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 				 spacalPitchSize);  // witdth of replica
     
     
-    //                               
-    // Fibre 
-    //
-    
-    G4LogicalVolume* fibreLV =
-      new G4LogicalVolume ( new G4Box("fibre", config->spacal().fibreSize/2, config->spacal().fibreSize/2, calorLength/2),
-			    sensitiveMaterial,
-			    "fibre");
-    sensitivePV = new G4PVPlacement(
-				    0,                // no rotation
-				    G4ThreeVector(),  // at (0,0,0)
-				    fibreLV,          // its logical volume                         
-				    "fibre",    // its name
-				    calorCellLV,          // its mother  volume
-				    false,            // no boolean operation
-				    0,                // copy number
-				    checkOverlaps);  // checking overlaps
+    if (config->spacal().airGap > 0) { 
+      //                               
+      // Air gap 
+      //
+      G4LogicalVolume* airgapLV =
+	new G4LogicalVolume ( new G4Box("airgap",
+					config->spacal().fibreSize/2+config->spacal().airGap,
+					config->spacal().fibreSize/2+config->spacal().airGap,
+					calorLength/2),
+			      airMaterial,
+			      "airgap");
+      sensitivePV = new G4PVPlacement(
+				      0,                // no rotation
+				      G4ThreeVector(),  // at (0,0,0)
+				      airgapLV,          // its logical volume                         
+				      "airgap",    // its name
+				      calorCellLV,          // its mother  volume
+				      false,            // no boolean operation
+				      0,                // copy number
+				      checkOverlaps);  // checking overlaps
+      //                               
+      // Fibre in air gap
+      //
+      G4LogicalVolume* fibreLV =
+	new G4LogicalVolume ( new G4Box("fibre",
+					config->spacal().fibreSize/2,
+					config->spacal().fibreSize/2,
+					calorLength/2),
+			      sensitiveMaterial,
+			      "fibre");
+      sensitivePV = new G4PVPlacement(
+				      0,                // no rotation
+				      G4ThreeVector(),  // at (0,0,0)
+				      fibreLV,          // its logical volume                         
+				      "fibre",    // its name
+				      airgapLV,          // its mother  volume
+				      false,            // no boolean operation
+				      0,                // copy number
+				      checkOverlaps);  // checking overlaps
+    }
+    else {
+      //                               
+      // Fibre directly in the cell
+      //
+      G4LogicalVolume* fibreLV =
+	new G4LogicalVolume ( new G4Box("fibre",
+					config->spacal().fibreSize/2,
+					config->spacal().fibreSize/2,
+					calorLength/2),
+			      sensitiveMaterial,
+			      "fibre");
+      sensitivePV = new G4PVPlacement(
+				      0,                // no rotation
+				      G4ThreeVector(),  // at (0,0,0)
+				      fibreLV,          // its logical volume                         
+				      "fibre",    // its name
+				      calorCellLV,          // its mother  volume
+				      false,            // no boolean operation
+				      0,                // copy number
+				      checkOverlaps);  // checking overlaps
+    }
   }
   config->setPV (absorberPV, sensitivePV);
   //

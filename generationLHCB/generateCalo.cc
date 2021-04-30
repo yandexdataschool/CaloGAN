@@ -137,6 +137,7 @@ int main(int argc,char** argv)
     spacal.cells = 8;
     spacal.fibres = 72;
     spacal.fibreSize = 1*mm;
+    spacal.airGap = 0.1*mm;
     spacal.length = 150*mm;
     spacal.frontCellLength = 0;
     spacal.fibreMaterial = SpacalCaloConfiguration::GAGG;
@@ -150,6 +151,7 @@ int main(int argc,char** argv)
     spacal.cells = 8;
     spacal.fibres = 72;
     spacal.fibreSize = 1*mm;
+    spacal.airGap = 0.1*mm;
     spacal.length = 150*mm;
     spacal.frontCellLength = 45*mm;
     spacal.fibreMaterial = SpacalCaloConfiguration::GAGG;
@@ -163,6 +165,7 @@ int main(int argc,char** argv)
     spacal.cells = 4;
     spacal.fibres = 72;
     spacal.fibreSize = 1*mm;
+    spacal.airGap = 0.1*mm;
     spacal.length = 290*mm;
     spacal.frontCellLength = 0;
     spacal.fibreMaterial = SpacalCaloConfiguration::POLYSTYRENE;
@@ -176,6 +179,7 @@ int main(int argc,char** argv)
     spacal.cells = 4;
     spacal.fibres = 72;
     spacal.fibreSize = 1*mm;
+    spacal.airGap = 0.1*mm;
     spacal.length = 290*mm;
     spacal.frontCellLength = 80*mm;
     spacal.fibreMaterial = SpacalCaloConfiguration::POLYSTYRENE;
